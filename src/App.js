@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom'
 import './index.css'
 import NavBar from './components/NavBar'
+import Home from './components/Home'
+import ValidatorProfile from './components/ValidatorProfile';
 
 function App() {
   // const [validators, setValidators] = useState([]);
@@ -76,7 +78,16 @@ function App() {
   // }
 
   return (
-    <NavBar />
+    <Router>
+      <div className='bg-gradient-to-br from-violet-200 to-white min-h-screen overflow-hidden'>
+        <NavBar />
+        <Routes>
+          <Route path='/' element={<Home />}></Route>
+          <Route path='/validators' element={<ValidatorProfile />}></Route>
+        </Routes>
+      </div>
+
+    </Router >
   );
 }
 
