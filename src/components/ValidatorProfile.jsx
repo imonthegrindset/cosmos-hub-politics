@@ -30,7 +30,7 @@ export default function ValidatorProfile(props) {
                                 <h1 className="w-full py-3 px-3 bg-white text-indigo-700 lg:text-xl sm:text-md  rounded-lg mt-5 flex flex-row justify-between">Rate of Voting
                                     <div className="flex flex-row gap-3">
                                         <span>past</span>
-                                        <select className="bg-white  border-2 outline-none border-indigo-700 rounded-md text-sm font-semibold px-1">
+                                        <select className="bg-white  border-2 outline-none border-indigo-700 rounded-md text-sm font-semibold lg:px-1 sm:px-0 sm:py-0">
                                             <option value="">45 Proposals</option>
                                             <option value="">25 Proposals</option>
                                             <option value="">10 Proposals</option>

@@ -1,4 +1,4 @@
-import star from './star.svg'
+
 export default function NavBar(props) {
     return (
         <>
