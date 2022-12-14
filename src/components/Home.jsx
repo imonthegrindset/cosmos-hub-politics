@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 export default function Home(props) {
     return (
-        <div className='px-40 py-80 flex flex-col gap-5 overflow-hidden'>
+        <div className='px-40 py-60 flex flex-col gap-5 overflow-hidden'>
             <h1 className="font-Titillium text-6xl text-indigo-700 font-bold">Visualize Cosmos Hub Governance Data</h1>
             <h3 className="font-Titillium text-4xl text-indigo-700 font-regular">The validators you delegate to should align with you politically.</h3>
             <div className='flex flex-row gap-5 mt-3'>
