@@ -10,9 +10,11 @@ export default function Home(props) {
                 rounded-md border-2 border-indigo-700 cursor-pointer transition ease-out delay-50 bg-color
                  hover:bg-white hover:text-indigo-700'>See Validator Data</div>
                 </Link>
-                <div className='text-lg bg-indigo-700 text-white font-Titillium py-3 px-3 
+                <Link to='/proposals'>
+                    <div className='text-lg bg-indigo-700 text-white font-Titillium py-3 px-3 
                 rounded-md border-2 border-indigo-700 cursor-pointer transition ease-out delay-50 bg-color
                  hover:bg-white hover:text-indigo-700'>See Proposal Data</div>
+                </Link>
                 <div className='text-lg bg-indigo-700 text-white font-Titillium py-3 px-3 
                 rounded-md border-2 border-indigo-700 cursor-pointer transition ease-out delay-50 bg-color
                  hover:bg-white hover:text-indigo-700'>Check an Address</div>

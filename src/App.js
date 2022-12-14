@@ -6,6 +6,7 @@ import './index.css'
 import NavBar from './components/NavBar'
 import Home from './components/Home'
 import ValidatorProfile from './components/ValidatorProfile';
+import Proposals from './components/Proposals';
 
 function App() {
   // const [validators, setValidators] = useState([]);
@@ -84,6 +85,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />}></Route>
           <Route path='/validators' element={<ValidatorProfile />}></Route>
+          <Route path='/proposals' element={<Proposals/>}></Route>
         </Routes>
       </div>
 

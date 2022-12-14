@@ -23,6 +23,10 @@ code {
     monospace;
 }
 
+p {
+  word-wrap: break-word;
+}
+
 @font-face {
   font-family: 'Titillium';
   src: url('../public/TitilliumWeb-Regular.ttf')

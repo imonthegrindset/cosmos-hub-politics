@@ -14,7 +14,7 @@ export default function ValidatorProfile(props) {
                 <div className="absolute left-[22rem]"><DropdownDisplay /></div>
             </div>
 
-            <div className=" font-Titillium px-6 w-100 border-2 border-indigo-700 rounded-md bg-gradient-to-br from-violet-100 to-white p-3">
+            <div className=" font-Titillium px-6 w-100 border-2 border-indigo-700 rounded-md bg-gradient-to-br from-violet-100 to-white p-3 shadow-lg">
                 <div>
                     <h1 className="pt-2 px-1 text-3xl text-indigo-700 font-bold">VALIDATOR Governance Profile</h1>
                     <div className="flex flex-row justify-start items-center gap-3">
@@ -105,7 +105,7 @@ export default function ValidatorProfile(props) {
 
 
             </div>
-            <div className=" font-Titillium px-6 w-100 border-2 border-indigo-700 rounded-md bg-gradient-to-br from-violet-100 to-white p-3">
+            <div className=" font-Titillium px-6 w-100 border-2 border-indigo-700 rounded-md bg-gradient-to-br from-violet-100 to-white p-3 shadow-lg">
                 <div>
                     <h1 className="pt-2 px-1 text-3xl text-indigo-700 font-bold">Data Charts</h1>
                 </div>
