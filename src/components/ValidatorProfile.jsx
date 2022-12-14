@@ -2,8 +2,10 @@ import Dropdown from "./Dropdown"
 import DropdownDisplay from "./DropdownPercentage"
 import PieChart from "./PieChart"
 import HorizontalBarChart from "../BarChart"
+import { useState, useEffect, useRef } from "react"
 
 export default function ValidatorProfile(props) {
+    const [copied, setCopied] = useState(false);
     return (
         <div className='lg:px-40 lg:py-20 flex flex-col gap-5 sm:px-10 sm:py-10 md:px-20 md:py-20'>
 
@@ -15,6 +17,10 @@ export default function ValidatorProfile(props) {
             <div className=" font-Titillium px-6 w-100 border-2 border-indigo-700 rounded-md bg-gradient-to-br from-violet-100 to-white p-3">
                 <div>
                     <h1 className="pt-2 px-1 text-3xl text-indigo-700 font-bold">VALIDATOR Governance Profile</h1>
+                    <div className="flex flex-row justify-start items-center gap-3">
+                        <h5 className="px-1 py-1 text-indigo-700">cosmos17291akad2028mzki900</h5>
+                        <span onClick={() => {setCopied(true)}}className="text-center cursor-pointer rounded-md px-2 text-sm border-2 border-indigo-700 bg-indigo-700 text-white hover:bg-white hover:text-indigo-700">Copy</span><span className={copied ? "block text-indigo-700 text-sm" : "hidden"}>Copied!</span>
+                    </div>
                 </div>
 
                 <div className="flex flex-col gap-10">
@@ -64,7 +70,7 @@ export default function ValidatorProfile(props) {
                                 <div className="flex flex-row start gap-20 lg:text-lg sm:text-sm text-indigo-700 border-b-2 border-indigo-700 py-3">
                                     <span>Prop Number</span><span>Vote</span><div className="flex-auto flex justify-end">View Proposal Details</div>
                                 </div>
-                                <div className="flex flex-row start gap-20 lg:text-lg sm:text-sm text-indigo-700 border-b-2 border-indigo-700 py-3">
+                                <div className="flex flex-row start  gap-20 lg:text-lg sm:text-sm text-indigo-700 border-b-2 border-indigo-700 py-3">
                                     <span>Prop Number</span><span>Vote</span><div className="flex-auto flex justify-end">View Proposal Details</div>
                                 </div>
                                 <div className="flex flex-row start gap-20 lg:text-lg sm:text-sm text-indigo-700 border-b-2 border-indigo-700 py-3">
