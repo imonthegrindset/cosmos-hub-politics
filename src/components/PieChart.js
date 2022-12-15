@@ -17,8 +17,8 @@ export default function PieChart (props) {
               random.int(1, 100),
               random.int(1, 100),
             ],
-            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', 'black'],
-            hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', 'black'],
+            backgroundColor: ['#A7FF86', '#FF8686', '#FF3C3C', '#D5D5D5'],
+            hoverBackgroundColor: ['#A7FF86', '#FF8686', '#FF3C3C', '#D5D5D5'],
           },
         ],
       });

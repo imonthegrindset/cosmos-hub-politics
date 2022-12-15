@@ -1,10 +1,17 @@
 import { useState } from 'react'
+import PieChart from './PieChart';
+import  DropdownProps  from './DropdownProps'
 
 export default function Proposals(props) {
 
     const [copied, setCopied] = useState(false);
+
     return (
         <div className='lg:px-40 lg:py-20 flex flex-col gap-5 sm:px-10 sm:py-10 md:px-20 md:py-20'>
+
+            <div className="flex flex-row gap-5 w-1/2 relative h-[4rem]">
+                <div className="absolute"><DropdownProps /></div>
+            </div>
 
             <div className=" font-Titillium px-6 w-100 border-2 border-indigo-700 rounded-md bg-gradient-to-br from-violet-100 to-white p-3 shadow-lg">
                 <div>
@@ -15,7 +22,7 @@ export default function Proposals(props) {
                                 <div className='flex lg:flex-row md:flex-row sm:flex-col sm:gap-1 lg:items-center md:items-center sm:justify-center'>
                                     <h5 className="pl-1 py-1 text-indigo-700 sm:text-sm">181AADM117291akad2028mzki900</h5>
                                     <div className='flex flex-row w-full items-center'>
-                                        <span onClick={() => { setCopied(true) }} className="lg:mx-3 md:mx-3 sm:mx-0 sm:mr-3 text-center cursor-pointer rounded-md px-2 text-sm border-2 border-indigo-700 bg-indigo-700 text-white hover:bg-white hover:text-indigo-700">Copy</span><div className={copied ? "block text-indigo-700 text-sm mr-3" : "hidden"}>✓</div>
+                                        <span onClick={() => { setCopied(true) }} className="lg:mx-3 md:mx-3 sm:mx-0 sm:mr-3 text-center cursor-pointer rounded-md px-2 text-sm border-2 border-indigo-700 bg-indigo-700 text-white hover:bg-white hover:text-indigo-700">Copy</span><div className={copied ? "block text-indigo-700 text-sm mr-3" : "hidden"}>Copied!</div>
                                     </div>
 
                                 </div>
@@ -53,7 +60,7 @@ export default function Proposals(props) {
                     <div className='w-full flex flex-row gap-5'>
                         <div className='w-1/2'>
                             <div className='w-full flex flex-col'>
-                                <h1 className="py-3 px-3 bg-white text-indigo-700 text-xl  rounded-lg mt-5 flex flex-row gap-3 justify-between"> Validator Votes
+                                <h1 className="py-3 px-3 bg-white text-indigo-700 text-xl  rounded-lg mt-5 flex flex-row gap-3 justify-between  border-[1px] border-indigo-200"> Validator Votes
                                     <span className='text-sm '> select Vote
                                         <select name="" id="" className='bg-white  ml-3 border-2 outline-none border-indigo-700 rounded-md text-sm font-semibold lg:px-1 sm:px-0 sm:py-0'>
                                             <option value="">All</option>
@@ -101,7 +108,7 @@ export default function Proposals(props) {
                         </div>
 
                         <div className='w-1/2'>
-                            <h1 className="w-full py-3 px-3 bg-white text-indigo-700 text-xl  rounded-lg mt-5">Turnout Rank</h1>
+                            <h1 className="w-full py-3 px-3 bg-white text-indigo-700 text-xl  rounded-lg mt-5 border-[1px] border-indigo-200">Turnout Rank</h1>
                             <div className="w-full py-3 px-3 text-indigo-700 font-medium lg:text-2xl sm:text-lg">Proposal 82 is the <strong>#1 proposal</strong> ranked by voter turnout</div>
                             <div className="w-full py-1 flex flex-col lg:text-lg sm:text-sm ">
                                 <div className="flex flex-row justify-between bg-white px-3 py-1 rounded-t-md">
@@ -113,19 +120,33 @@ export default function Proposals(props) {
                                 <div className="flex flex-row justify-between bg-white px-3 py-1">
                                     <span>No With Veto</span><span className="text-indigo-700 font-semibold">10000 votes</span>
                                 </div>
-                                <div className="flex flex-row justify-between bg-violet-100 px-3 py-1 rounded-b-md">
+                                <div className="flex flex-row justify-between bg-violet-100 px-3 py-1 ">
                                     <span>Abstain</span><span className="text-indigo-700 font-semibold ">10000 votes</span>
                                 </div>
+                                <div className="flex flex-row justify-between bg-white px-3 py-1 rounded-b-md">
+                                    <span className='font-semibold'>TOTAL</span><span className="text-indigo-700 font-semibold ">10000 votes</span>
+                                </div>
                             </div>
-                            <h1 className="w-full py-3 px-3 bg-white text-indigo-700 text-xl  rounded-lg mt-5">Participation rate</h1>
+                            <h1 className="w-full py-3 px-3 bg-white text-indigo-700 text-xl  rounded-lg mt-5  border-[1px] border-indigo-200">Participation rate</h1>
                             <div className="w-full py-3 px-3 text-indigo-700 font-medium lg:text-2xl sm:text-lg"> Proposal 82 had a participation rate of <strong>74% </strong> amongst ATOM stakers </div>
                         </div>
                     </div>
 
-                    <div className='w-full flex flex-row gap-5'>
-                        
+                    <div className='w-full flex flex-row gap-5 mt-8'>
+                        <div className="w-1/2 h-80 flex flex-col items-center gap-5 ">
+                            <h1 className="py-3 px-3 bg-white text-indigo-700 text-xl  rounded-lg w-full  border-[1px] border-indigo-200">Validator Votes</h1>
+                            <div className="w-full h-60 flex justify-center">
+                                <PieChart />
+                            </div>
+                        </div>
+                        <div className="w-1/2 h-80 flex flex-col items-center gap-5 ">
+                            <h1 className="py-3 px-3 bg-white text-indigo-700 text-xl  rounded-lg w-full  border-[1px] border-indigo-200">Delegator Votes</h1>
+                            <div className="w-full h-60 flex justify-center">
+                                <PieChart />
+                            </div>
+                        </div>
                     </div>
-                    
+
 
                 </div>
             </div>
