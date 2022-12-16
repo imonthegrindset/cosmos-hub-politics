@@ -6,6 +6,8 @@ const DropdownDisplay = (props) => {
     const [display, setDisplay] = useState(["Percentage", "Numeric"]
     )
 
+    
+
     return (
         <div className="bg-white border-2 border-indigo-700 text-indigo-700 w-60 px-4 py-1 rounded-md font-Titillium">
             <button className='text-xl font-semibold w-full flex justify-start relative py-2' onClick={() => setIsExpanded(!isExpanded)}>

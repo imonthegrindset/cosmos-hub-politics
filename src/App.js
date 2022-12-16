@@ -9,74 +9,77 @@ import ValidatorProfile from './components/ValidatorProfile';
 import Proposals from './components/Proposals';
 
 function App() {
-  // const [validators, setValidators] = useState([]);
-  // const [proposals, setProposals] = useState([]);
-  // const [turnoutProposals, setTurnoutProposals] = useState([]);
-  // const [currentValidator, setCurrentValidator] = useState([]);
-  // const [currentProposal, setCurrentProposal] = useState([])
+  const [validators, setValidators] = useState([]);
+  const [proposals, setProposals] = useState([]);
+  const [turnoutProposals, setTurnoutProposals] = useState([]);
+  const [currentValidator, setCurrentValidator] = useState([]);
+  const [currentProposal, setCurrentProposal] = useState([])
 
 
-  // const getCurrentValidator = (current) => {
-  //   setCurrentValidator(current);
-  // }
+  const getCurrentValidator = (current) => {
+    setCurrentValidator(current);
+  }
 
-  // const getCurrentProposal = (current) => {
-  //   setCurrentProposal(current);
-  // }
+  const getCurrentProposal = (current) => {
+    setCurrentProposal(current);
+    console.log(current)
+  }
 
-  // useEffect(() => {
-  //   fetch('https://api.mintscan.io/v1/cosmos/proposals', {
-  //     method: 'get'
-  //   })
-  //     .then(res => {
-  //       return res.json()
-  //     })
-  //     .then(data => {
-  //       console.log(data);
-  //       setProposals(data);
-  //     })
+  useEffect(() => {
+    fetch('https://api.mintscan.io/v1/cosmos/proposals', {
+      method: 'get'
+    })
+      .then(res => {
+        return res.json()
+      })
+      .then(data => {
+        console.log(data);
+        setProposals(data);
+      })
 
-  //   fetch('https://api.mintscan.io/v1/cosmos/validators', {
-  //     method: 'get'
-  //   })
-  //     .then(res => {
-  //       return res.json()
-  //     })
-  //     .then(data => {
-  //       let validatorArray = data;
+    fetch('https://api.mintscan.io/v1/cosmos/validators', {
+      method: 'get'
+    })
+      .then(res => {
+        return res.json()
+      })
+      .then(data => {
+        let validatorArray = data;
 
-  //       let filtered = validatorArray.filter(validator => validatorArray.indexOf(validator) < 175)
-  //       console.log(filtered);
+        let filtered = validatorArray.filter(validator => validatorArray.indexOf(validator) < 175)
+        console.log(filtered);
 
-  //       setValidators(filtered);
-  //     })
+        setValidators(filtered);
+      })
 
 
-  // }, [])
+  }, [])
 
-  // useEffect(() => {
-  //   sortPropsTurnout();
-  // }, [proposals])
+  useEffect(() => {
+    sortPropsTurnout();
+  }, [proposals])
 
-  // function sortPropsTurnout() {
-  //   let copyProposals = proposals.slice();
-  //   let sortedTurnout =
-  //     copyProposals.sort((a, b) => {
-  //       let aTotal = (Number(a.yes) + Number(a.no) + Number(a.abstain) + Number(a.no_with_veto)) / 100000;
-  //       let aTurnout = (aTotal / 200000000) * 10;
 
-  //       let bTotal = (Number(b.yes) + Number(b.no) + Number(b.abstain) + Number(b.no_with_veto)) / 100000;
-  //       let bTurnout = (bTotal / 200000000) * 10;
+  //SORT PROPOSALS BY TURNOUT
+  function sortPropsTurnout() {
+    let copyProposals = proposals.slice();
+    let sortedTurnout =
+      copyProposals.sort((a, b) => {
+        let aTotal = (Number(a.yes) + Number(a.no) + Number(a.abstain) + Number(a.no_with_veto)) / 100000;
+        let aTurnout = (aTotal / 200000000) * 10;
 
-  //       if (aTurnout > bTurnout && a.tx_hash !== null) {
-  //         return -1;
-  //       } else {
-  //         return 1;
-  //       }
-  //     })
+        let bTotal = (Number(b.yes) + Number(b.no) + Number(b.abstain) + Number(b.no_with_veto)) / 100000;
+        let bTurnout = (bTotal / 200000000) * 10;
 
-  //   setTurnoutProposals(sortedTurnout)
-  // }
+        if (aTurnout > bTurnout && a.tx_hash !== null) {
+          return -1;
+        } else {
+          return 1;
+        }
+      })
+
+    setTurnoutProposals(sortedTurnout)
+  }
 
   return (
     <Router>
@@ -84,8 +87,10 @@ function App() {
         <NavBar />
         <Routes>
           <Route path='/' element={<Home />}></Route>
-          <Route path='/validators' element={<ValidatorProfile />}></Route>
-          <Route path='/proposals' element={<Proposals/>}></Route>
+          <Route path='/validators' element={<ValidatorProfile validators={validators} proposals={proposals} currentValidator={currentValidator} getCurrentValidator={getCurrentValidator}
+          currentProposal={currentProposal}/>}></Route>
+          <Route path='/proposals' element={<Proposals validators={validators} proposals={proposals}  currentValidator={currentValidator} 
+          currentProposal={currentProposal} getCurrentProposal={getCurrentProposal} turnoutProposals={turnoutProposals}/>}></Route>
         </Routes>
       </div>
 
