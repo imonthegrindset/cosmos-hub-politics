@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import PieChart from './PieChart';
 import DropdownProps from './DropdownProps'
 
@@ -123,6 +123,17 @@ export default function Proposals(props) {
         setParticipationRate(participation);
     }
 
+    const text = useRef();
+
+    const copyContent = async () => {
+        try {
+            await navigator.clipboard.writeText(text.current.textContent);
+            console.log('Content copied to clipboard');
+        } catch (err) {
+            console.error('Failed to copy: ', err);
+        }
+    }
+
 
 
     return (
@@ -139,9 +150,9 @@ export default function Proposals(props) {
                             <h1 className="pt-2 px-1 lg:text-3xl sm:text-2xl text-indigo-700 font-bold ">PROPOSAL {props.currentProposal.id} </h1>
                             <div className="flex flex-row justify-start items-center">
                                 <div className='flex lg:flex-row md:flex-row sm:flex-col sm:gap-1 lg:items-center md:items-center sm:justify-center'>
-                                    <h5 className="pl-1 py-1 text-indigo-700 sm:text-sm">{props.currentProposal.tx_hash}</h5>
+                                    <h5 ref={text} className="pl-1 py-1 text-indigo-700 sm:text-sm">{props.currentProposal.tx_hash}</h5>
                                     <div className='flex flex-row w-full items-center'>
-                                        <span onClick={() => { setCopied(true) }} className="lg:mx-3 md:mx-3 sm:mx-0 sm:mr-3 text-center cursor-pointer rounded-md px-2 text-sm border-2 border-indigo-700 bg-indigo-700 text-white hover:bg-white hover:text-indigo-700">Copy</span><div className={copied ? "block text-indigo-700 text-sm mr-3" : "hidden"}>Copied!</div>
+                                        <span onClick={() => { copyContent(); setCopied(true) }} className="lg:mx-3 md:mx-3 sm:mx-0 sm:mr-3 text-center cursor-pointer rounded-md px-2 text-sm border-2 border-indigo-700 bg-indigo-700 text-white hover:bg-white hover:text-indigo-700">Copy</span><div className={copied ? "block text-indigo-700 text-sm mr-3" : "hidden"}>Copied!</div>
                                     </div>
 
                                 </div>

@@ -20,6 +20,7 @@ export default function ValidatorProfile(props) {
     const [pastPropsValue, setPastPropsValue] = useState(45);
     const [firstRender, setFirstRender] = useState(true);
     const [voteOptionsStats, setVoteOptionsStats] = useState([{ no: [0], yes: [0], veto: [0], abstain: [0] }]);
+    const [chartData, setChartData] = useState([1, 2, 3, 4])
 
     const pastProposals = useRef();
 
@@ -61,8 +62,8 @@ export default function ValidatorProfile(props) {
                 setVotes(array[0].votes);
             })
 
-            
-          
+
+
     }, [update])
 
     useEffect(() => {
@@ -82,10 +83,30 @@ export default function ValidatorProfile(props) {
         calculateVotingProportions(filteredVotes);
     }, [renderAgain])
 
+    useEffect(() => {
+        if (percentageDisplay) {
+            setChartData([voteOptionsStats[0].yes[0], voteOptionsStats[0].no[0], voteOptionsStats[0].veto[0], voteOptionsStats[0].abstain[0]])
+        } else {
+            setChartData([voteOptionsStats[0].yes[1], voteOptionsStats[0].no[1], voteOptionsStats[0].veto[1], voteOptionsStats[0].abstain[1]])
+        }
+    }, [voteOptionsStats])
+
+    useEffect(() => {
+        if (percentageDisplay) {
+            setChartData([voteOptionsStats[0].yes[0], voteOptionsStats[0].no[0], voteOptionsStats[0].veto[0], voteOptionsStats[0].abstain[0]])
+        } else {
+            setChartData([voteOptionsStats[0].yes[1], voteOptionsStats[0].no[1], voteOptionsStats[0].veto[1], voteOptionsStats[0].abstain[1]])
+        }
+    }, [percentageDisplay])
+
 
 
     const updateState = (value) => {
         setUpdate(value);
+    }
+
+    const changeDisplay = () => {
+        setPercentageDisplay(!percentageDisplay);
     }
 
     const calculateVotingRate = (value) => {
@@ -104,11 +125,6 @@ export default function ValidatorProfile(props) {
         setVotingRateInteger(filtered.length);
         setRenderAgain(!renderAgain);
     }
-
-    // const changeStatsDisplay = (value) => {
-    //     if (value == 123) { setPercentageDisplay(false) }
-    //     if (value == '%') { setPercentageDisplay(true) }
-    // }
 
     const calculateVotingProportions = (filtered) => {
         let abstainVotes = filtered.filter(vote => vote.votes[0].option === 'VOTE_OPTION_ABSTAIN');
@@ -132,11 +148,22 @@ export default function ValidatorProfile(props) {
         calculateVotingRate(value);
     }
 
-    ////////////////// SELECT MENU CHANGE FOR PERCENTAGE/NUMERIC DISPLAY
-    const changeStatsDisplay = (value) => {
-        if (value == 123) { setPercentageDisplay(false) }
-        if (value == '%') { setPercentageDisplay(true) }
+    //COPY CLIPBOARD
+    const text = useRef();
+
+    const copyContent = async () => {
+        try {
+            await navigator.clipboard.writeText(text.current.textContent);
+            console.log('Content copied to clipboard');
+        } catch (err) {
+            console.error('Failed to copy: ', err);
+        }
     }
+
+    // const updateChartData = (value1, value2, value3, value4) => {
+    //     setChartData([value1, value2, value3, value4])
+    // }
+
 
 
 
@@ -145,15 +172,20 @@ export default function ValidatorProfile(props) {
 
             <div className="flex flex-row gap-5 w-1/2 relative h-[4rem]">
                 <div className="absolute"><Dropdown validators={props.validators} getCurrentValidator={props.getCurrentValidator} updateState={updateState} /></div>
-                <div className="absolute left-[22rem]"><DropdownDisplay /></div>
+                <div className="absolute left-[22rem]"><DropdownDisplay changeDisplay={changeDisplay} /></div>
             </div>
 
             <div className=" font-Titillium px-6 w-100 border-2 border-indigo-700 rounded-md bg-gradient-to-br from-violet-100 to-white p-3 shadow-lg">
+                {props.currentValidator !== undefined || props.currentValidator !== null ? (
+                    <div>helo</div>
+                ): (
+                    <div>no helo</div>
+                )}
                 <div>
                     <h1 className="pt-2 px-1 text-3xl text-indigo-700 font-bold">{props.currentValidator.moniker} <span className="text-lg font-regular">Governance Profile</span></h1>
                     <div className="flex flex-row justify-start items-center gap-3">
-                        <h5 className="px-1 py-1 text-indigo-700">{props.currentValidator.account_address}</h5>
-                        <span onClick={() => { setCopied(true) }} className="text-center cursor-pointer rounded-md px-2 text-sm border-2 border-indigo-700 bg-indigo-700 text-white hover:bg-white hover:text-indigo-700">Copy</span><span className={copied ? "block text-indigo-700 text-sm" : "hidden"}>Copied!</span>
+                        <h5 ref={text} className="px-1 py-1 text-indigo-700">{props.currentValidator.account_address}</h5>
+                        <span onClick={() => { copyContent(); setCopied(true) }} className="text-center cursor-pointer rounded-md px-2 text-sm border-2 border-indigo-700 bg-indigo-700 text-white hover:bg-white hover:text-indigo-700">Copy</span><span className={copied ? "block text-indigo-700 text-sm" : "hidden"}>Copied!</span>
                     </div>
                 </div>
 
@@ -177,7 +209,12 @@ export default function ValidatorProfile(props) {
                                         </select>
                                     </div>
                                 </h1>
-                                <div className="w-full py-3 px-3 text-indigo-700 font-medium lg:text-2xl sm:text-lg">This Validator has a voting rate of <strong>{votingRate}%</strong> in the past <strong>{pastPropsValue}</strong> proposals</div>
+                                {percentageDisplay ? (
+                                    <div className="w-full py-3 px-3 text-indigo-700 font-medium lg:text-2xl sm:text-lg">This Validator has a voting rate of <strong>{votingRate}%</strong> in the past <strong>{pastPropsValue}</strong> proposals</div>
+                                ) : (
+                                    <div className="w-full py-3 px-3 text-indigo-700 font-medium lg:text-2xl sm:text-lg">This Validator has a voting rate of <strong>{votingRateInteger}</strong> in the past <strong>{pastPropsValue}</strong> proposals</div>
+                                )}
+
                                 <div className="w-full py-1 flex flex-col lg:text-lg sm:text-sm ">
                                     {percentageDisplay ? (
                                         <>
@@ -192,7 +229,17 @@ export default function ValidatorProfile(props) {
                                             </div>
                                         </>
                                     ) : (
-                                        <div></div>
+                                        <>
+                                            <div className="flex flex-row justify-between bg-white px-3 py-1 rounded-t-md">
+                                                <span>Yes</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].yes[1]} votes</span>
+                                            </div><div className="flex flex-row justify-between bg-violet-100 px-3 py-1">
+                                                <span>No</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].no[1]} votes</span>
+                                            </div><div className="flex flex-row justify-between bg-white px-3 py-1">
+                                                <span>No With Veto</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].veto[1]} votes</span>
+                                            </div><div className="flex flex-row justify-between bg-violet-100 px-3 py-1 rounded-b-md">
+                                                <span>Abstain</span><span className="text-indigo-700 font-semibold ">{voteOptionsStats[0].abstain[1]} votes</span>
+                                            </div>
+                                        </>
                                     )}
 
                                 </div>
@@ -268,18 +315,12 @@ export default function ValidatorProfile(props) {
                 </div>
                 <div className="flex flex-row gap-10 w-full py-5 min">
                     <div className="lg:w-1/3 h-80 flex flex-col items-center gap-5 sm:w-1/2">
-                        <h1 className="py-3 px-3 bg-white text-indigo-700 text-xl  rounded-lg w-full  border-[1px] border-indigo-200 flex flex-row justify-between">Voting Tendecies
+                        <h1 className="py-3 px-3 bg-white text-indigo-700 text-xl  rounded-lg w-full  border-[1px] border-indigo-200 flex flex-row justify-between">Voting Activity Chart ({percentageDisplay ? "Percentage" : "Numeric"})
                             <div className="flex flex-row gap-3">
-                                <span>past</span>
-                                <select className="bg-white  border-2 outline-none border-indigo-700 rounded-md text-sm font-semibold lg:px-1 sm:px-0 sm:py-0">
-                                    <option value="">45 Proposals</option>
-                                    <option value="">25 Proposals</option>
-                                    <option value="">10 Proposals</option>
-                                </select>
                             </div>
                         </h1>
                         <div className="w-full h-60 flex justify-center">
-                            <PieChart />
+                            <PieChart voteOptionsStats={voteOptionsStats} percentageDisplay={percentageDisplay} chartData={chartData} />
                         </div>
                     </div>
                     <div className="lg:w-2/3 h-80 sm:w-1/2">

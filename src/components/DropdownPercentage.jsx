@@ -18,7 +18,7 @@ const DropdownDisplay = (props) => {
                 <ul className="overflow-hidden">
                     {display.map(option => {
                         return (
-                            <li key={Math.random() * 182} className='transition ease-out 50 py-2 cursor-pointer hover:translate-x-4'>{option}</li>
+                            <li key={Math.random() * 182} onClick={() => { props.changeDisplay() }}className='transition ease-out 50 py-2 cursor-pointer hover:translate-x-4'>{option}</li>
                         )
                     })}
                 </ul>
