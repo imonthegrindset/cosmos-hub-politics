@@ -11,25 +11,15 @@ export default function Proposals(props) {
     const [totalAtomsForVote, setTotalAtomsForVote] = useState(0)
     const [stakedAtoms, setStakedAtoms] = useState(0)
     const [participationRate, setParticipationRate] = useState('');
+    const [firstRender, setFirstRender] = useState(true);
     const [delegatorsVotingPercentage, setDelegatorsVotingPercentage] = useState([]);
-
 
 
 
     useEffect(() => {
 
-        fetch('https://api.mintscan.io/v1/utils/params/chain/cosmos')
-        .then(res => {
-            return res.json()
-        })
-        .then(data => {
-            let bondedAtoms = data.params.staking_pool.pool.bonded_tokens;
-            bondedAtoms = Number(bondedAtoms.substr(0, bondedAtoms.length - 6));
-            console.log(bondedAtoms);
+        setStakedAtoms(props.stakedAtoms);
 
-            setStakedAtoms(bondedAtoms);
-
-        })
 
         fetch('https://api.mintscan.io/v1/cosmos/proposals/82/votes', {
             method: 'get'
@@ -44,6 +34,12 @@ export default function Proposals(props) {
     }, [])
 
     useEffect(() => {
+        if(firstRender && props.currentProposal.length === 0) {
+            console.log('henlo')
+            setFirstRender(false);
+            return;
+        }
+        console.log('rendered')
         let proposalId = props.currentProposal.id;
         getTurnoutRank(proposalId);
         getVoteResults(props.currentProposal);
@@ -88,7 +84,6 @@ export default function Proposals(props) {
 
         props.turnoutProposals.map(proposal => {
             if (proposal.id === id) {
-                console.log(props.turnoutProposals.indexOf(proposal) + 1)
                 let rank = props.turnoutProposals.indexOf(proposal) + 1;
                 setTurnoutRank(rank);
             }
@@ -116,6 +111,7 @@ export default function Proposals(props) {
     }
 
     function getParticipationRate() {
+        console.log(totalAtomsForVote, stakedAtoms)
         let pRate = (totalAtomsForVote / stakedAtoms) * 100;
 
         let participation = pRate.toFixed(2);

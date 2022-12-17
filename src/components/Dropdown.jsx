@@ -5,11 +5,16 @@ import { AiOutlineArrowRight } from 'react-icons/ai'
 const Dropdown = (props) => {
     const [expanded, setExpanded] = useState(false);
     const [value, setValue] = useState(false);
+    const [inputValue, setInputValue] = useState('');
 
     const sendCurrentValidator = (val) => {
         props.getCurrentValidator(val)
         props.updateState(!value);
         setValue(!value);
+    }
+
+    const changeInputValue = (e) => {
+        setInputValue(e.target.value)
     }
 
     return (
@@ -21,7 +26,7 @@ const Dropdown = (props) => {
             {expanded && (
                 <ul className="overflow-y-scroll overflow-x-hidden h-80 ">
                     <li className="flex flex-row items-center">
-                        <input type="text" placeholder="Search Your Validator" className=" my-1 py-1 px-1 w-3/4 border-2 border-indigo-700 outline-none rounded-md"/>
+                        <input value={inputValue} onChange={() => { changeInputValue() }} type="text" placeholder="Search Your Validator" className=" my-1 py-1 px-1 w-3/4 border-2 border-indigo-700 outline-none rounded-md"/>
                         <span className="cursor-pointer font-bold w-[2-rem] ml-5 p-1 text-white bg-indigo-700 border-2 border-indigo-700 rounded-md hover:bg-white hover:text-indigo-700"><AiOutlineArrowRight /></span>
                     </li>
                     {props.validators.map(validator => {

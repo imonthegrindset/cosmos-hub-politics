@@ -14,6 +14,8 @@ function App() {
   const [turnoutProposals, setTurnoutProposals] = useState([]);
   const [currentValidator, setCurrentValidator] = useState([]);
   const [currentProposal, setCurrentProposal] = useState([])
+  const [stakedAtoms, setStakedAtoms] = useState(0)
+  // const [fromValidators, setFromValidators] = useState(0);
 
 
   const getCurrentValidator = (current) => {
@@ -22,10 +24,25 @@ function App() {
 
   const getCurrentProposal = (current) => {
     setCurrentProposal(current);
-    console.log(current)
   }
 
+  // const loadsFromValidators = () => {
+  //   setFromValidators(fromValidators + 1)
+  // }
+
   useEffect(() => {
+    fetch('https://api.mintscan.io/v1/utils/params/chain/cosmos')
+    .then(res => {
+        return res.json()
+    })
+    .then(data => {
+        let bondedAtoms = data.params.staking_pool.pool.bonded_tokens;
+        bondedAtoms = Number(bondedAtoms.substr(0, bondedAtoms.length - 6));
+        console.log(bondedAtoms);
+
+        setStakedAtoms(bondedAtoms);
+    })
+
     fetch('https://api.mintscan.io/v1/cosmos/proposals', {
       method: 'get'
     })
@@ -87,10 +104,10 @@ function App() {
         <NavBar />
         <Routes>
           <Route path='/' element={<Home />}></Route>
-          <Route path='/validators' element={<ValidatorProfile validators={validators} proposals={proposals} currentValidator={currentValidator} getCurrentValidator={getCurrentValidator}
+          <Route path='/validators' element={<ValidatorProfile validators={validators} proposals={proposals} currentValidator={currentValidator} getCurrentValidator={getCurrentValidator} getCurrentProposal={getCurrentProposal}
           currentProposal={currentProposal}/>}></Route>
-          <Route path='/proposals' element={<Proposals validators={validators} proposals={proposals}  currentValidator={currentValidator} 
-          currentProposal={currentProposal} getCurrentProposal={getCurrentProposal} turnoutProposals={turnoutProposals}/>}></Route>
+          <Route path='/proposals' element={<Proposals stakedAtoms={stakedAtoms} validators={validators} proposals={proposals}  currentValidator={currentValidator} 
+          currentProposal={currentProposal} getCurrentProposal={getCurrentProposal} getCurrentValidator={getCurrentValidator} turnoutProposals={turnoutProposals} />}></Route>
         </Routes>
       </div>
 

@@ -3,6 +3,7 @@ import DropdownDisplay from "./DropdownPercentage"
 import PieChart from "./PieChart"
 import HorizontalBarChart from "../BarChart"
 import { useState, useEffect, useRef } from "react"
+import { Link } from 'react-router-dom'
 
 export default function ValidatorProfile(props) {
 
@@ -61,9 +62,6 @@ export default function ValidatorProfile(props) {
                 array.push(data);
                 setVotes(array[0].votes);
             })
-
-
-
     }, [update])
 
     useEffect(() => {
@@ -167,6 +165,7 @@ export default function ValidatorProfile(props) {
 
 
 
+
     return (
         <div className='lg:px-40 lg:py-20 flex flex-col gap-5 sm:px-10 sm:py-10 md:px-20 md:py-20'>
 
@@ -176,170 +175,209 @@ export default function ValidatorProfile(props) {
             </div>
 
             <div className=" font-Titillium px-6 w-100 border-2 border-indigo-700 rounded-md bg-gradient-to-br from-violet-100 to-white p-3 shadow-lg">
-                {props.currentValidator !== undefined || props.currentValidator !== null ? (
-                    <div>helo</div>
-                ): (
-                    <div>no helo</div>
-                )}
-                <div>
-                    <h1 className="pt-2 px-1 text-3xl text-indigo-700 font-bold">{props.currentValidator.moniker} <span className="text-lg font-regular">Governance Profile</span></h1>
-                    <div className="flex flex-row justify-start items-center gap-3">
-                        <h5 ref={text} className="px-1 py-1 text-indigo-700">{props.currentValidator.account_address}</h5>
-                        <span onClick={() => { copyContent(); setCopied(true) }} className="text-center cursor-pointer rounded-md px-2 text-sm border-2 border-indigo-700 bg-indigo-700 text-white hover:bg-white hover:text-indigo-700">Copy</span><span className={copied ? "block text-indigo-700 text-sm" : "hidden"}>Copied!</span>
-                    </div>
-                </div>
 
-                <div className="flex flex-col gap-10">
-                    <div className="flex flex-row w-full gap-10">
-                        <div className="flex flex-col w-1/2">
+                {props.currentValidator.length === 0 ? (
 
-                            <div className="w-full ">
-                                <h1 className="w-full py-3 px-3 bg-white text-indigo-700 text-xl  rounded-lg mt-5  border-[1px] border-indigo-200">Voting Power</h1>
-                                <div className="w-full py-3 px-3 text-indigo-700 font-medium lg:text-2xl sm:text-lg h-1/2">This Validator has a voting power of <strong className="text-2xl">{votingPower}</strong></div>
+                    <h1 className="pt-2 px-1 text-3xl text-indigo-700 font-bold">NO DATA, SELECT YOUR VALIDATOR</h1>
+                ) : (
+                    <>
+                        <div>
+                            <h1 className="pt-2 px-1 text-3xl text-indigo-700 font-bold">{props.currentValidator.moniker} <span className="text-lg font-regular">Governance Profile</span></h1>
+                            <div className="flex flex-row justify-start items-center gap-3">
+                                <h5 ref={text} className="px-1 py-1 text-indigo-700">{props.currentValidator.account_address}</h5>
+                                <span onClick={() => { copyContent(); setCopied(true) }} className="text-center cursor-pointer rounded-md px-2 text-sm border-2 border-indigo-700 bg-indigo-700 text-white hover:bg-white hover:text-indigo-700">Copy</span><span className={copied ? "block text-indigo-700 text-sm" : "hidden"}>Copied!</span>
                             </div>
+                        </div>
 
-                            <div className="w-full ">
-                                <h1 className="w-full py-3 px-3 bg-white text-indigo-700 lg:text-xl sm:text-md  rounded-lg mt-5 flex flex-row justify-between  border-[1px] border-indigo-200">Voting Activity
+                        <div className="flex flex-col gap-10">
+                            <div className="flex flex-row w-full gap-10">
+                                <div className="flex flex-col w-1/2">
+
+                                    <div className="w-full ">
+                                        <h1 className="w-full py-3 px-3 bg-white text-indigo-700 text-xl  rounded-lg mt-5  border-[1px] border-indigo-200">Voting Power</h1>
+                                        <div className="w-full py-3 px-3 text-indigo-700 font-medium lg:text-2xl sm:text-lg h-1/2">This Validator has a voting power of <strong className="text-2xl">{votingPower}</strong></div>
+                                    </div>
+
+                                    <div className="w-full ">
+                                        <h1 className="w-full py-3 px-3 bg-white text-indigo-700 lg:text-xl sm:text-md  rounded-lg mt-5 flex flex-row justify-between  border-[1px] border-indigo-200">Voting Activity
+                                            <div className="flex flex-row gap-3">
+                                                <span>past</span>
+                                                <select ref={pastProposals} onChange={(e) => { changeSelectValuePastProps(e.target.value) }} className="bg-white  border-2 outline-none border-indigo-700 rounded-md text-sm font-semibold lg:px-1 sm:px-0 sm:py-0">
+                                                    <option >45 Proposals</option>
+                                                    <option >25 Proposals</option>
+                                                    <option >10 Proposals</option>
+                                                </select>
+                                            </div>
+                                        </h1>
+                                        {percentageDisplay ? (
+                                            <div className="w-full py-3 px-3 text-indigo-700 font-medium lg:text-2xl sm:text-lg">This Validator has a voting rate of <strong>{votingRate}%</strong> in the past <strong>{pastPropsValue}</strong> proposals</div>
+                                        ) : (
+                                            <div className="w-full py-3 px-3 text-indigo-700 font-medium lg:text-2xl sm:text-lg">This Validator has a voting rate of <strong>{votingRateInteger}</strong> in the past <strong>{pastPropsValue}</strong> proposals</div>
+                                        )}
+
+                                        <div className="w-full py-1 flex flex-col lg:text-lg sm:text-sm ">
+                                            {percentageDisplay ? (
+                                                <>
+                                                    <div className="flex flex-row justify-between bg-white px-3 py-1 rounded-t-md">
+                                                        <span>Yes</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].yes[0]}% of the votes</span>
+                                                    </div><div className="flex flex-row justify-between bg-violet-100 px-3 py-1">
+                                                        <span>No</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].no[0]}% of the votes</span>
+                                                    </div><div className="flex flex-row justify-between bg-white px-3 py-1">
+                                                        <span>No With Veto</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].veto[0]}% of the votes</span>
+                                                    </div><div className="flex flex-row justify-between bg-violet-100 px-3 py-1 rounded-b-md">
+                                                        <span>Abstain</span><span className="text-indigo-700 font-semibold ">{voteOptionsStats[0].abstain[0]}% of the votes</span>
+                                                    </div>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <div className="flex flex-row justify-between bg-white px-3 py-1 rounded-t-md">
+                                                        <span>Yes</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].yes[1]} votes</span>
+                                                    </div><div className="flex flex-row justify-between bg-violet-100 px-3 py-1">
+                                                        <span>No</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].no[1]} votes</span>
+                                                    </div><div className="flex flex-row justify-between bg-white px-3 py-1">
+                                                        <span>No With Veto</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].veto[1]} votes</span>
+                                                    </div><div className="flex flex-row justify-between bg-violet-100 px-3 py-1 rounded-b-md">
+                                                        <span>Abstain</span><span className="text-indigo-700 font-semibold ">{voteOptionsStats[0].abstain[1]} votes</span>
+                                                    </div>
+                                                </>
+                                            )}
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className='w-1/2 flex flex-col'>
+                                    <h1 className="py-3 px-3 bg-white text-indigo-700 text-xl  rounded-lg mt-5  border-[1px] border-indigo-200 flex flex-row justify-between"> Proposal Votes
+                                        <div>
+                                            <span>sort by</span>
+                                            <select className="bg-white  border-2 outline-none border-indigo-700 rounded-md text-sm font-semibold lg:px-1 sm:px-0 sm:py-0 ml-3">
+                                                <option value="">Recent</option>
+                                                <option value="">Turnout</option>
+                                            </select>
+                                        </div>
+                                    </h1>
+                                    <div className="h-full py-3 px-3 flex flex-col overflow-y-scroll max-h-80">
+                                        {votes.map(vote => {
+                                            return (
+                                                <>
+                                                    {
+                                                        votes.indexOf(vote) === 0 ? (
+                                                            <div className="flex flex-row start gap-20 lg:text-lg sm:text-sm text-indigo-700 border-b-2 border-indigo-700 pb-3">
+                                                                <span>Proposal {vote.proposal_id}</span>
+                                                                {vote.votes[0].option === 'VOTE_OPTION_YES' ? (
+                                                                    <div style={{ color: 'green' }}>YES</div>
+                                                                ) : vote.votes[0].option === 'VOTE_OPTION_NO' ? (
+                                                                    <div style={{ color: 'rgb(214, 0, 0)' }}>NO</div>
+                                                                ) : vote.votes[0].option === 'VOTE_OPTION_ABSTAIN' ? (
+                                                                    <div style={{ color: 'rgb(65, 65, 65)' }}>ABSTAIN</div>
+                                                                ) : vote.votes[0].option === 'VOTE_OPTION_NO_WITH_VETO' ? (
+                                                                    <div style={{ color: 'rgb(214, 0, 0)' }}>NO WITH VETO</div>
+                                                                ) : (
+                                                                    <span></span>
+                                                                )}
+                                                                <Link className="flex-auto flex justify-end" to='/proposals' onClick={ () => {
+                                                                  function sendProp() {
+                                                                    props.proposals.map(prop => {
+                                                                        if(prop.id == vote.proposal_id){
+                                                                            props.getCurrentProposal(prop);
+                                                                        }                                                                        
+                                                                    })
+                                                                    
+                                                                  };
+                                                                  sendProp();
+
+                                                                }
+                                                                }>
+                                                                    <div >View Proposal Details</div>
+                                                                </Link>
+
+                                                            </div>
+                                                        ) : (
+                                                            <div className="flex flex-row gap-20 lg:text-lg sm:text-sm text-indigo-700 border-b-2 border-indigo-700 py-3">
+                                                                <span>Proposal {vote.proposal_id}</span>
+                                                                {vote.votes[0].option === 'VOTE_OPTION_YES' ? (
+                                                                    <div style={{ color: 'green' }}>YES</div>
+                                                                ) : vote.votes[0].option === 'VOTE_OPTION_NO' ? (
+                                                                    <div style={{ color: 'rgb(214, 0, 0)' }}>NO</div>
+                                                                ) : vote.votes[0].option === 'VOTE_OPTION_ABSTAIN' ? (
+                                                                    <div style={{ color: 'rgb(65, 65, 65)' }}>ABSTAIN</div>
+                                                                ) : vote.votes[0].option === 'VOTE_OPTION_NO_WITH_VETO' ? (
+                                                                    <div style={{ color: 'rgb(214, 0, 0)' }}>NO WITH VETO</div>
+                                                                ) : (
+                                                                    <span></span>
+                                                                )}
+                                                                <Link className="flex flex-auto justify-end" to="/proposals" onClick={ () => {
+                                                                  function sendProp() {
+                                                                    props.proposals.map(prop => {
+                                                                        if(prop.id == vote.proposal_id){
+                                                                            props.getCurrentProposal(prop);
+                                                                        }                                                                        
+                                                                    })
+                                                                    
+                                                                  };
+                                                                  sendProp();
+                                                                  
+
+                                                                }
+                                                                }>
+                                                                    <div>View Proposal Details</div>
+                                                                </Link>
+                                                            </div>
+                                                        )
+                                                    }
+                                                </>
+                                            )
+                                        })}
+                                    </div>
+                                </div>
+                            </div>
+                        </div></>
+                )}
+
+
+                {/* ...........CHARTS............ */}
+
+            </div>
+
+            {props.currentValidator.length === 0 ? (
+                <div></div>
+            ) : (
+                <>
+                    <div className=" font-Titillium px-6 w-100 border-2 border-indigo-700 rounded-md bg-gradient-to-br from-violet-100 to-white p-3 shadow-lg">
+                        <div>
+                            <h1 className="pt-2 px-1 text-3xl text-indigo-700 font-bold">DATA</h1>
+                        </div>
+                        <div className="flex flex-row gap-10 w-full py-5 min">
+                            <div className="lg:w-1/3 h-80 flex flex-col items-center gap-5 sm:w-1/2">
+                                <h1 className="py-3 px-3 bg-white text-indigo-700 text-xl  rounded-lg w-full  border-[1px] border-indigo-200 flex flex-row justify-between">Voting Activity Chart ({percentageDisplay ? "Percentage" : "Numeric"})
+                                    <div className="flex flex-row gap-3">
+                                    </div>
+                                </h1>
+                                <div className="w-full h-60 flex justify-center">
+                                    <PieChart voteOptionsStats={voteOptionsStats} percentageDisplay={percentageDisplay} chartData={chartData} />
+                                </div>
+                            </div>
+                            <div className="lg:w-2/3 h-80 sm:w-1/2">
+                                <h1 className="py-3 px-3 bg-white text-indigo-700 text-xl  rounded-lg  border-[1px] border-indigo-200 flex flex-row justify-between">Undelegations/Delegations Ratio
                                     <div className="flex flex-row gap-3">
                                         <span>past</span>
-                                        <select ref={pastProposals} onChange={(e) => { changeSelectValuePastProps(e.target.value) }} className="bg-white  border-2 outline-none border-indigo-700 rounded-md text-sm font-semibold lg:px-1 sm:px-0 sm:py-0">
-                                            <option >45 Proposals</option>
-                                            <option >25 Proposals</option>
-                                            <option >10 Proposals</option>
+                                        <select className="bg-white  border-2 outline-none border-indigo-700 rounded-md text-sm font-semibold lg:px-1 sm:px-0 sm:py-0">
+                                            <option value="">Week</option>
+                                            <option value="">Month</option>
+                                            <option value="">Year</option>
                                         </select>
                                     </div>
                                 </h1>
-                                {percentageDisplay ? (
-                                    <div className="w-full py-3 px-3 text-indigo-700 font-medium lg:text-2xl sm:text-lg">This Validator has a voting rate of <strong>{votingRate}%</strong> in the past <strong>{pastPropsValue}</strong> proposals</div>
-                                ) : (
-                                    <div className="w-full py-3 px-3 text-indigo-700 font-medium lg:text-2xl sm:text-lg">This Validator has a voting rate of <strong>{votingRateInteger}</strong> in the past <strong>{pastPropsValue}</strong> proposals</div>
-                                )}
-
-                                <div className="w-full py-1 flex flex-col lg:text-lg sm:text-sm ">
-                                    {percentageDisplay ? (
-                                        <>
-                                            <div className="flex flex-row justify-between bg-white px-3 py-1 rounded-t-md">
-                                                <span>Yes</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].yes[0]}% of the votes</span>
-                                            </div><div className="flex flex-row justify-between bg-violet-100 px-3 py-1">
-                                                <span>No</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].no[0]}% of the votes</span>
-                                            </div><div className="flex flex-row justify-between bg-white px-3 py-1">
-                                                <span>No With Veto</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].veto[0]}% of the votes</span>
-                                            </div><div className="flex flex-row justify-between bg-violet-100 px-3 py-1 rounded-b-md">
-                                                <span>Abstain</span><span className="text-indigo-700 font-semibold ">{voteOptionsStats[0].abstain[0]}% of the votes</span>
-                                            </div>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <div className="flex flex-row justify-between bg-white px-3 py-1 rounded-t-md">
-                                                <span>Yes</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].yes[1]} votes</span>
-                                            </div><div className="flex flex-row justify-between bg-violet-100 px-3 py-1">
-                                                <span>No</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].no[1]} votes</span>
-                                            </div><div className="flex flex-row justify-between bg-white px-3 py-1">
-                                                <span>No With Veto</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].veto[1]} votes</span>
-                                            </div><div className="flex flex-row justify-between bg-violet-100 px-3 py-1 rounded-b-md">
-                                                <span>Abstain</span><span className="text-indigo-700 font-semibold ">{voteOptionsStats[0].abstain[1]} votes</span>
-                                            </div>
-                                        </>
-                                    )}
-
+                                <div className="w-full h-60 flex mt-6">
+                                    <HorizontalBarChart />
                                 </div>
                             </div>
                         </div>
-
-                        <div className='w-1/2 flex flex-col'>
-                            <h1 className="py-3 px-3 bg-white text-indigo-700 text-xl  rounded-lg mt-5  border-[1px] border-indigo-200 flex flex-row justify-between"> Proposal Votes
-                                <div>
-                                    <span>sort by</span>
-                                    <select className="bg-white  border-2 outline-none border-indigo-700 rounded-md text-sm font-semibold lg:px-1 sm:px-0 sm:py-0 ml-3">
-                                        <option value="">Recent</option>
-                                        <option value="">Turnout</option>
-                                    </select>
-                                </div>
-                            </h1>
-                            <div className="h-full py-3 px-3 flex flex-col overflow-y-scroll max-h-80">
-                                {votes.map(vote => {
-                                    return (
-                                        <>
-                                            {
-                                                votes.indexOf(vote) === 0 ? (
-                                                    <div className="flex flex-row start gap-20 lg:text-lg sm:text-sm text-indigo-700 border-b-2 border-indigo-700 pb-3">
-                                                        <span>Proposal {vote.proposal_id}</span>
-                                                        {vote.votes[0].option === 'VOTE_OPTION_YES' ? (
-                                                            <div style={{ color: 'green' }}>YES</div>
-                                                        ) : vote.votes[0].option === 'VOTE_OPTION_NO' ? (
-                                                            <div style={{ color: 'rgb(214, 0, 0)' }}>NO</div>
-                                                        ) : vote.votes[0].option === 'VOTE_OPTION_ABSTAIN' ? (
-                                                            <div style={{ color: 'rgb(65, 65, 65)' }}>ABSTAIN</div>
-                                                        ) : vote.votes[0].option === 'VOTE_OPTION_NO_WITH_VETO' ? (
-                                                            <div style={{ color: 'rgb(214, 0, 0)' }}>NO WITH VETO</div>
-                                                        ) : (
-                                                            <span></span>
-                                                        )}
-                                                        <div className="flex-auto flex justify-end">View Proposal Details</div>
-                                                    </div>
-                                                ) : (
-                                                    <div className="flex flex-row start gap-20 lg:text-lg sm:text-sm text-indigo-700 border-b-2 border-indigo-700 py-3">
-                                                        <span>Proposal {vote.proposal_id}</span>
-                                                        {vote.votes[0].option === 'VOTE_OPTION_YES' ? (
-                                                            <div style={{ color: 'green' }}>YES</div>
-                                                        ) : vote.votes[0].option === 'VOTE_OPTION_NO' ? (
-                                                            <div style={{ color: 'rgb(214, 0, 0)' }}>NO</div>
-                                                        ) : vote.votes[0].option === 'VOTE_OPTION_ABSTAIN' ? (
-                                                            <div style={{ color: 'rgb(65, 65, 65)' }}>ABSTAIN</div>
-                                                        ) : vote.votes[0].option === 'VOTE_OPTION_NO_WITH_VETO' ? (
-                                                            <div style={{ color: 'rgb(214, 0, 0)' }}>NO WITH VETO</div>
-                                                        ) : (
-                                                            <span></span>
-                                                        )}
-                                                        <div className="flex-auto flex justify-end">View Proposal Details</div>
-                                                    </div>
-                                                )
-                                            }
-                                        </>
-                                    )
-                                })}
-                            </div>
-                        </div>
                     </div>
-
-                    {/* ...........CHARTS............ */}
-
-
-                </div>
+                </>
+            )}
 
 
-            </div>
-            <div className=" font-Titillium px-6 w-100 border-2 border-indigo-700 rounded-md bg-gradient-to-br from-violet-100 to-white p-3 shadow-lg">
-                <div>
-                    <h1 className="pt-2 px-1 text-3xl text-indigo-700 font-bold">DATA</h1>
-                </div>
-                <div className="flex flex-row gap-10 w-full py-5 min">
-                    <div className="lg:w-1/3 h-80 flex flex-col items-center gap-5 sm:w-1/2">
-                        <h1 className="py-3 px-3 bg-white text-indigo-700 text-xl  rounded-lg w-full  border-[1px] border-indigo-200 flex flex-row justify-between">Voting Activity Chart ({percentageDisplay ? "Percentage" : "Numeric"})
-                            <div className="flex flex-row gap-3">
-                            </div>
-                        </h1>
-                        <div className="w-full h-60 flex justify-center">
-                            <PieChart voteOptionsStats={voteOptionsStats} percentageDisplay={percentageDisplay} chartData={chartData} />
-                        </div>
-                    </div>
-                    <div className="lg:w-2/3 h-80 sm:w-1/2">
-                        <h1 className="py-3 px-3 bg-white text-indigo-700 text-xl  rounded-lg  border-[1px] border-indigo-200 flex flex-row justify-between">Undelegations/Delegations Ratio
-                            <div className="flex flex-row gap-3">
-                                <span>past</span>
-                                <select className="bg-white  border-2 outline-none border-indigo-700 rounded-md text-sm font-semibold lg:px-1 sm:px-0 sm:py-0">
-                                    <option value="">Week</option>
-                                    <option value="">Month</option>
-                                    <option value="">Year</option>
-                                </select>
-                            </div>
-                        </h1>
-                        <div className="w-full h-60 flex mt-6">
-                            <HorizontalBarChart />
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
 
