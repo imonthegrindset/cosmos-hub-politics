@@ -38,7 +38,6 @@ function App() {
     .then(data => {
         let bondedAtoms = data.params.staking_pool.pool.bonded_tokens;
         bondedAtoms = Number(bondedAtoms.substr(0, bondedAtoms.length - 6));
-        console.log(bondedAtoms);
 
         setStakedAtoms(bondedAtoms);
     })
@@ -96,6 +95,10 @@ function App() {
       })
 
     setTurnoutProposals(sortedTurnout)
+  }
+
+  function batchRequests() {
+
   }
 
   return (

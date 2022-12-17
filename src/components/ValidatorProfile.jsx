@@ -27,6 +27,7 @@ export default function ValidatorProfile(props) {
 
     useEffect(() => {
         if (firstRender) {
+            props.getCurrentValidator("")
             setFirstRender(false);
             return;
         }
@@ -103,8 +104,8 @@ export default function ValidatorProfile(props) {
         setUpdate(value);
     }
 
-    const changeDisplay = () => {
-        setPercentageDisplay(!percentageDisplay);
+    const changeDisplay = (value) => {
+        setPercentageDisplay(value);
     }
 
     const calculateVotingRate = (value) => {
@@ -114,9 +115,6 @@ export default function ValidatorProfile(props) {
         if (value === '10 Proposals') { pastValue = 10 };
         let proposalCutOff = (Number(props.proposals[0].id) - pastValue)
         let filtered = votes.filter(vote => vote.proposal_id > proposalCutOff)
-
-
-
 
         setFilteredVotes(filtered);
         setPastPropsValue(pastValue);
@@ -141,12 +139,12 @@ export default function ValidatorProfile(props) {
         setVoteOptionsStats(voteOptions);
     }
 
-    /////////////////// SELECT MENU CHANGE FOR PAST PROPOSALS
+
     const changeSelectValuePastProps = (value) => {
         calculateVotingRate(value);
     }
 
-    //COPY CLIPBOARD
+    
     const text = useRef();
 
     const copyContent = async () => {
@@ -157,12 +155,6 @@ export default function ValidatorProfile(props) {
             console.error('Failed to copy: ', err);
         }
     }
-
-    // const updateChartData = (value1, value2, value3, value4) => {
-    //     setChartData([value1, value2, value3, value4])
-    // }
-
-
 
 
 
@@ -275,16 +267,16 @@ export default function ValidatorProfile(props) {
                                                                 ) : (
                                                                     <span></span>
                                                                 )}
-                                                                <Link className="flex-auto flex justify-end" to='/proposals' onClick={ () => {
-                                                                  function sendProp() {
-                                                                    props.proposals.map(prop => {
-                                                                        if(prop.id == vote.proposal_id){
-                                                                            props.getCurrentProposal(prop);
-                                                                        }                                                                        
-                                                                    })
-                                                                    
-                                                                  };
-                                                                  sendProp();
+                                                                <Link className="flex-auto flex justify-end" to='/proposals' onClick={() => {
+                                                                    function sendProp() {
+                                                                        props.proposals.map(prop => {
+                                                                            if (prop.id == vote.proposal_id) {
+                                                                                props.getCurrentProposal(prop);
+                                                                            }
+                                                                        })
+
+                                                                    };
+                                                                    sendProp();
 
                                                                 }
                                                                 }>
@@ -306,17 +298,17 @@ export default function ValidatorProfile(props) {
                                                                 ) : (
                                                                     <span></span>
                                                                 )}
-                                                                <Link className="flex flex-auto justify-end" to="/proposals" onClick={ () => {
-                                                                  function sendProp() {
-                                                                    props.proposals.map(prop => {
-                                                                        if(prop.id == vote.proposal_id){
-                                                                            props.getCurrentProposal(prop);
-                                                                        }                                                                        
-                                                                    })
-                                                                    
-                                                                  };
-                                                                  sendProp();
-                                                                  
+                                                                <Link className="flex flex-auto justify-end" to="/proposals" onClick={() => {
+                                                                    function sendProp() {
+                                                                        props.proposals.map(prop => {
+                                                                            if (prop.id == vote.proposal_id) {
+                                                                                props.getCurrentProposal(prop);
+                                                                            }
+                                                                        })
+
+                                                                    };
+                                                                    sendProp();
+
 
                                                                 }
                                                                 }>
@@ -348,28 +340,15 @@ export default function ValidatorProfile(props) {
                             <h1 className="pt-2 px-1 text-3xl text-indigo-700 font-bold">DATA</h1>
                         </div>
                         <div className="flex flex-row gap-10 w-full py-5 min">
-                            <div className="lg:w-1/3 h-80 flex flex-col items-center gap-5 sm:w-1/2">
+                            <div className="w-full  flex flex-col items-center gap-5">
                                 <h1 className="py-3 px-3 bg-white text-indigo-700 text-xl  rounded-lg w-full  border-[1px] border-indigo-200 flex flex-row justify-between">Voting Activity Chart ({percentageDisplay ? "Percentage" : "Numeric"})
                                     <div className="flex flex-row gap-3">
                                     </div>
                                 </h1>
-                                <div className="w-full h-60 flex justify-center">
+                                <h1 className="flex flex-row w-full text-2xl font-bold px-1 text-indigo-700">Past {pastPropsValue} proposals</h1>
+                                <div className="w-full h-80 flex justify-center">
+
                                     <PieChart voteOptionsStats={voteOptionsStats} percentageDisplay={percentageDisplay} chartData={chartData} />
-                                </div>
-                            </div>
-                            <div className="lg:w-2/3 h-80 sm:w-1/2">
-                                <h1 className="py-3 px-3 bg-white text-indigo-700 text-xl  rounded-lg  border-[1px] border-indigo-200 flex flex-row justify-between">Undelegations/Delegations Ratio
-                                    <div className="flex flex-row gap-3">
-                                        <span>past</span>
-                                        <select className="bg-white  border-2 outline-none border-indigo-700 rounded-md text-sm font-semibold lg:px-1 sm:px-0 sm:py-0">
-                                            <option value="">Week</option>
-                                            <option value="">Month</option>
-                                            <option value="">Year</option>
-                                        </select>
-                                    </div>
-                                </h1>
-                                <div className="w-full h-60 flex mt-6">
-                                    <HorizontalBarChart />
                                 </div>
                             </div>
                         </div>
