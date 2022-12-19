@@ -120,7 +120,7 @@ function App() {
         <div className='bg-gradient-to-br from-violet-200 to-white min-h-screen overflow-hidden'>
           <NavBar />
           <Routes>
-            <Route path='/' element={<Home />}></Route>
+            <Route path='/home' element={<Home />}></Route>
             <Route path='/validators' element={<ValidatorProfile
               sendUpdate={sendUpdate} sentUpdate={sentUpdate}
               validators={validators} proposals={proposals} currentValidator={currentValidator} getCurrentValidator={getCurrentValidator} getCurrentProposal={getCurrentProposal}
