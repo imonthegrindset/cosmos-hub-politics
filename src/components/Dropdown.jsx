@@ -5,19 +5,12 @@ import { AiOutlineArrowRight } from 'react-icons/ai'
 const Dropdown = (props) => {
     const [expanded, setExpanded] = useState(false);
     const [value, setValue] = useState(false);
-    const [inputValue, setInputValue] = useState('');
 
     const sendCurrentValidator = (val) => {
         props.getCurrentValidator(val)
         props.updateState(!value);
         setValue(!value);
     }
-
-    const changeInputValue = (e) => {
-        setInputValue(e.target.value)
-        console.log(e.target.value)
-    }
-
 
     return (
         <div className="bg-white border-2 border-indigo-700 text-indigo-700 w-80 px-4 py-1 rounded-md font-Titillium">

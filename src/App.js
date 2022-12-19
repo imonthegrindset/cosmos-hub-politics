@@ -14,7 +14,8 @@ function App() {
   const [turnoutProposals, setTurnoutProposals] = useState([]);
   const [currentValidator, setCurrentValidator] = useState([]);
   const [currentProposal, setCurrentProposal] = useState([])
-  const [stakedAtoms, setStakedAtoms] = useState(0)
+  const [stakedAtoms, setStakedAtoms] = useState(0);
+  const [sentUpdate, setSentUpdate] = useState(false);
   // const [fromValidators, setFromValidators] = useState(0);
 
 
@@ -26,9 +27,10 @@ function App() {
     setCurrentProposal(current);
   }
 
-  // const loadsFromValidators = () => {
-  //   setFromValidators(fromValidators + 1)
-  // }
+  const sendUpdate = (value) => {
+    console.log('sends')
+    setSentUpdate(value);
+  }
 
   useEffect(() => {
     fetch('https://api.mintscan.io/v1/utils/params/chain/cosmos')
@@ -97,19 +99,19 @@ function App() {
     setTurnoutProposals(sortedTurnout)
   }
 
-  function batchRequests() {
-
-  }
-
   return (
     <Router>
       <div className='bg-gradient-to-br from-violet-200 to-white min-h-screen overflow-hidden'>
         <NavBar />
         <Routes>
           <Route path='/' element={<Home />}></Route>
-          <Route path='/validators' element={<ValidatorProfile validators={validators} proposals={proposals} currentValidator={currentValidator} getCurrentValidator={getCurrentValidator} getCurrentProposal={getCurrentProposal}
+          <Route path='/validators' element={<ValidatorProfile 
+          sendUpdate={sendUpdate} sentUpdate={sentUpdate} 
+          validators={validators} proposals={proposals} currentValidator={currentValidator} getCurrentValidator={getCurrentValidator} getCurrentProposal={getCurrentProposal}
           currentProposal={currentProposal}/>}></Route>
-          <Route path='/proposals' element={<Proposals stakedAtoms={stakedAtoms} validators={validators} proposals={proposals}  currentValidator={currentValidator} 
+          <Route path='/proposals' element={<Proposals 
+          sendUpdate={sendUpdate} 
+          stakedAtoms={stakedAtoms} validators={validators} proposals={proposals}  currentValidator={currentValidator} 
           currentProposal={currentProposal} getCurrentProposal={getCurrentProposal} getCurrentValidator={getCurrentValidator} turnoutProposals={turnoutProposals} />}></Route>
         </Routes>
       </div>

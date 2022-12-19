@@ -9,7 +9,7 @@ const DropdownValidatorVote= (props) => {
 
 
     return (
-        <div className="bg-white border-[1px] border-indigo-200 text-indigo-700 w-80 px-4 py-1 rounded-md font-Titillium">
+        <div className="bg-white border-[1px] border-indigo-200 text-indigo-700 lg:w-80 md:w-60 sm:w-60 px-4 py-1 rounded-md font-Titillium">
             <button className='text-xl  w-full flex justify-start relative py-2' onClick={() => setExpanded(!expanded)}>
                 {expanded ? "Select Validator" : "Select Validator"}
                 {expanded ? <BiUpArrowAlt className="absolute right-0 top-3" /> : <BiDownArrowAlt className="absolute right-0 top-3" />}

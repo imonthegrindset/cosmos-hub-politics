@@ -3,6 +3,7 @@ import PieChart2 from './PieChart2';
 import DropdownProps from './DropdownProps'
 import { AiOutlineArrowRight, AiOutlineArrowLeft } from 'react-icons/ai'
 import DropdownValidatorVote from './DropdownValidatorVote';
+import { Link } from 'react-router-dom'
 
 export default function Proposals(props) {
 
@@ -21,6 +22,12 @@ export default function Proposals(props) {
 
 
     useEffect(() => {
+        return () => {
+            props.getCurrentProposal("");
+        }
+    }, [])
+
+    useEffect(() => {
         setStakedAtoms(props.stakedAtoms);
     }, [props.validators])
 
@@ -33,6 +40,7 @@ export default function Proposals(props) {
         let proposalId = props.currentProposal.id;
         getTurnoutRank(proposalId);
         getVoteResults(props.currentProposal);
+        setSelectedValidator("")
     }, [update])
 
     useEffect(() => {
@@ -85,7 +93,7 @@ export default function Proposals(props) {
         return `${month}/${day}/${year}`;
     }
 
-    //written by ChatGPT ;)
+    //written by ChatGPT 
     function removeLineBreaks(text) {
         if (text === undefined || text === null) {
             return
@@ -95,8 +103,6 @@ export default function Proposals(props) {
 
 
     function getTurnoutRank(id) {
-
-
         id = props.currentProposal.id;
 
         props.turnoutProposals.map(proposal => {
@@ -160,155 +166,173 @@ export default function Proposals(props) {
 
             <div className=" font-Titillium px-6 w-100 border-2 border-indigo-700 rounded-md bg-gradient-to-br from-violet-100 to-white p-3 shadow-lg">
                 {props.currentProposal.length === 0 ? (
-                     <h1 className="pt-2 px-1 text-3xl text-indigo-700 font-bold">NO DATA, SELECT A PROPOSAL</h1>
+                    <h1 className="pt-2 px-1 text-3xl text-indigo-700 font-bold">NO DATA, SELECT A PROPOSAL</h1>
                 ) : (
                     <><div>
-                            <div className='flex flex-row justify-between '>
-                                <div>
-                                    <h1 className="pt-2 px-1 lg:text-3xl sm:text-2xl text-indigo-700 font-bold ">PROPOSAL {props.currentProposal.id} </h1>
-                                    <div className="flex flex-row justify-start items-center">
-                                        <div className='flex lg:flex-row md:flex-row sm:flex-col sm:gap-1 lg:items-center md:items-center sm:justify-center'>
-                                            <h5 ref={text} className="pl-1 py-1 text-indigo-700 sm:text-sm">{props.currentProposal.tx_hash}</h5>
-                                            <div className='flex flex-row w-full items-center'>
-                                                <span onClick={() => { copyContent(); setCopied(true); } } className="lg:mx-3 md:mx-3 sm:mx-0 sm:mr-3 text-center cursor-pointer rounded-md px-2 text-sm border-2 border-indigo-700 bg-indigo-700 text-white hover:bg-white hover:text-indigo-700">Copy</span><div className={copied ? "block text-indigo-700 text-sm mr-3" : "hidden"}>Copied!</div>
-                                            </div>
+                        <div className='flex flex-row justify-between '>
+                            <div className='w-1/2'>
+                                <h1 className="pt-2 px-1 lg:text-3xl sm:text-2xl text-indigo-700 font-bold ">PROPOSAL {props.currentProposal.id} </h1>
+                                <div className="flex flex-row justify-start items-center">
+                                    <div className='sm:w-2/3 md:w-2/3 flex lg:flex-row md:flex-row sm:flex-col sm:gap-1 lg:items-center md:items-center sm:justify-center '>
+                                        <h5 ref={text} className="pl-1 py-1 text-indigo-700 sm:text-sm text-ellipsis overflow-hidden">{props.currentProposal.tx_hash}</h5>
+                                        <div className='flex flex-row w-1/3 items-center'>
+                                            <span onClick={() => { copyContent(); setCopied(true); }} className=" lg:mx-3 md:mx-3 sm:mx-0 sm:mr-3 text-center cursor-pointer rounded-md px-2 text-sm border-2 border-indigo-700 bg-indigo-700 text-white hover:bg-white hover:text-indigo-700">Copy</span><div className={copied ? "block text-indigo-700 text-sm mr-3" : "hidden"}>Copied!</div>
 
                                         </div>
 
                                     </div>
 
                                 </div>
-                                <div className='sm:text-sm'>
 
-                                    <h1 className={props.currentProposal.proposal_status === 'PROPOSAL_STATUS_REJECTED' ? (
-                                        "rounded-md py-1 px-1 lg:text-3xl sm:text-2xl text-white bg-rose-400 font-bold flex items-center justify-center"
+                            </div>
+                            <div className='sm:text-sm '>
+
+                                <h1 className={props.currentProposal.proposal_status === 'PROPOSAL_STATUS_REJECTED' ? (
+                                    "rounded-md py-1 px-1 lg:text-3xl sm:text-2xl text-white bg-rose-400 font-bold flex items-center justify-center"
+                                ) : props.currentProposal.proposal_status === 'PROPOSAL_STATUS_PASSED' ? (
+                                    "rounded-md py-1 px-1 lg:text-3xl sm:text-2xl text-white bg-green-300 font-bold flex items-center justify-center"
+                                ) : props.currentProposal.proposal_status === 'PROPOSAL_STATUS_VOTING_PERIOD' ? (
+                                    "rounded-md py-1 px-1 lg:text-3xl sm:text-2xl text-white bg-gray-400 font-bold flex items-center justify-center"
+                                ) : (
+                                    'WHAT'
+                                )}>
+                                    {props.currentProposal.proposal_status === 'PROPOSAL_STATUS_REJECTED' ? (
+                                        "REJECTED"
                                     ) : props.currentProposal.proposal_status === 'PROPOSAL_STATUS_PASSED' ? (
-                                        "rounded-md py-1 px-1 lg:text-3xl sm:text-2xl text-white bg-green-300 font-bold flex items-center justify-center"
+                                        "PASSED"
                                     ) : props.currentProposal.proposal_status === 'PROPOSAL_STATUS_VOTING_PERIOD' ? (
-                                        "rounded-md py-1 px-1 lg:text-3xl sm:text-2xl text-white bg-gray-400 font-bold flex items-center justify-center"
+                                        "VOTING PERIOD"
                                     ) : (
-                                        'WHAT'
-                                    )}>
-                                        {props.currentProposal.proposal_status === 'PROPOSAL_STATUS_REJECTED' ? (
-                                            "REJECTED"
-                                        ) : props.currentProposal.proposal_status === 'PROPOSAL_STATUS_PASSED' ? (
-                                            "PASSED"
-                                        ) : props.currentProposal.proposal_status === 'PROPOSAL_STATUS_VOTING_PERIOD' ? (
-                                            "VOTING PERIOD"
-                                        ) : (
-                                            '1) WHAT'
-                                        )}
-                                    </h1>
-                                    <div className='py-2 text-indigo-700 lg flex flex-row gap-2'><strong>VOTING PERIOD</strong> <span>|</span> <span>{toReadableDate(props.currentProposal.voting_start_time)}</span> to <span>{toReadableDate(props.currentProposal.voting_end_time)}</span></div>
-                                </div>
+                                        '1) WHAT'
+                                    )}
+                                </h1>
+                                <div className='py-2 text-indigo-700 lg flex flex-row gap-2'><strong>VOTING PERIOD</strong> <span>|</span> <span>{toReadableDate(props.currentProposal.voting_start_time)}</span> to <span>{toReadableDate(props.currentProposal.voting_end_time)}</span></div>
                             </div>
-                        </div><div data-id='prop-description' className='flex flex-col gap-3 mb-5'>
-                                <div className='w-full flex flex-row items-center justify-between pt-3 px-1'>
-                                    <h1 className="lg:text-3xl text-indigo-700 font-bold sm:text-2xl">DESCRIPTION</h1>
+                        </div>
+                    </div><div data-id='prop-description' className='flex flex-col gap-3 mb-5'>
+                            <div className='w-full flex flex-row items-center justify-between pt-3 px-1'>
+                                <h1 className="lg:text-3xl text-indigo-700 font-bold sm:text-2xl">DESCRIPTION</h1>
 
-                                </div>
+                            </div>
 
-                                <div className='w-100 h-80 bg-white rounded-lg overflow-y-auto flex flex-col gap-3'>
-                                    <h2 className='text-3xl flex flex-row justify-between py-5 px-5 text-indigo-700 font-semibold w-full bg-violet-100'>{props.currentProposal.title}<div className='text-indigo-700 text-lg font-regular'>proposed by <span className='text-2xl ml-1 font-semibold'>{props.currentProposal.moniker ? props.currentProposal.moniker : props.currentProposal.proposer}</span></div></h2>
-                                    <p className='w-full  h-100 py-5 px-5 text-indigo-700 overflow-y-auto sm:leading-8 lg:leading-8 sm:text-sm lg:text-md  md:text-md md:leading-8'> {removeLineBreaks(props.currentProposal.description)}</p>
-                                </div>
-                            </div></>
+                            <div className='w-100 h-80 bg-white rounded-lg overflow-y-auto flex flex-col gap-3'>
+                                <h2 className='text-3xl flex flex-row justify-between py-5 px-5 text-indigo-700 font-semibold w-full bg-violet-100'>{props.currentProposal.title}<div className='text-indigo-700 text-lg font-regular'>proposed by <span className='text-2xl ml-1 font-semibold'>{props.currentProposal.moniker ? props.currentProposal.moniker : props.currentProposal.proposer}</span></div></h2>
+                                <p className='w-full  h-100 py-5 px-5 text-indigo-700 overflow-y-auto sm:leading-8 lg:leading-8 sm:text-sm lg:text-md  md:text-md md:leading-8'> {removeLineBreaks(props.currentProposal.description)}</p>
+                            </div>
+                        </div></>
                 )}
-                
+
             </div>
 
-            <div className=" font-Titillium px-6 w-100 border-2 border-indigo-700 rounded-md bg-gradient-to-br from-violet-100 to-white p-3 shadow-lg">
+            {props.currentProposal.length !== 0 ? (
+                <>
+                    <div className=" font-Titillium px-6 w-100 border-2 border-indigo-700 rounded-md bg-gradient-to-br from-violet-100 to-white p-3 shadow-lg">
 
-                <h1 className="pt-2 px-1 lg:text-3xl sm:text-2xl text-indigo-700 font-bold ">DATA </h1>
-                <div className='w-full mt-3'>
 
-                    <div className='w-full flex flex-row gap-5'>
-                        <div className='w-1/2'>
-                            <div className='w-full flex flex-col'>
-                                <h1 className="py-3 px-3 bg-white text-indigo-700 text-xl  rounded-lg mt-5 flex flex-row gap-3 justify-between  border-[1px] border-indigo-200"> Validator Votes
-                                </h1>
-                                <div className="flex flex-row gap-5 w-1/2 my-3 relative h-[4rem]">
-                                    <div className="absolute w-full "><DropdownValidatorVote getSelectedValidator={getSelectedValidator} validators={props.validators} getCurrentValidator={props.getCurrentValidator} updateState={updateState} /></div>
-                                </div>
-                                <div className="h-full  flex flex-col max-h-80">
-                                    <div className="flex flex-row start gap-20 lg:text-lg sm:text-sm text-indigo-700 pb-3 h-[17.5rem]">
-                                        <div className='flex-auto flex flex-col gap-4 text-3xl  h-full border-[1px] border-indigo-200 rounded-lg overflow-hidden'>
-                                            <div className='bg-white p-4'> PROPOSAL {props.currentProposal.id}</div>
-                                            <div className='font-semibold px-4'>{selectedValidator.moniker}</div>
-                                            <div className='pb-4'> 
-                                            {selectedValidator.length !== 0 ? (
-                                                      <span className='px-4'>
-                                                      {validatorVote !== "" ? (
-                                                          <>
-                                                          voted
-                                                              {validatorVote[0].votes[0].option == 'VOTE_OPTION_ABSTAIN' ? (
-                                                                  <strong className='text-gray-500 ml-2'>ABSTAIN</strong>
-                                                              ) : validatorVote[0].votes[0].option == 'VOTE_OPTION_YES' ? (
-                                                                  <strong className='text-green-400 ml-2'>YES</strong>
-                                                              ) : validatorVote[0].votes[0].option == 'VOTE_OPTION_NO' ? (
-                                                                  <strong className='text-rose-500 ml-2'>NO</strong>
-                                                              ) : validatorVote[0].votes[0].option == 'VOTE_OPTION_NO_WITH_VETO' ? (
-                                                                  <strong className='text-rose-700 ml-2'>NO WITH VETO</strong>
-                                                              ) : (
-                                                                  <strong>DID NOT VOTE</strong>
-                                                              )
-  
-                                                              }
-                                                          </>
-                                                      ) : (
-                                                          <strong>DID NOT VOTE</strong>
-                                                      )}
-                                                  </span>
-                                            ): (
-                                                <div className='px-4 font-semibold'>SELECT A VALIDATOR</div>
-                                            )}
-                                          
+                        <h1 className="pt-2 px-1 lg:text-3xl sm:text-2xl text-indigo-700 font-bold ">DATA </h1>
+                        <div className='w-full mt-3'>
 
+                            <div className='w-full flex flex-row gap-5'>
+                                <div className='w-1/2'>
+                                    <div className='w-full flex flex-col'>
+                                        <h1 className="py-3 px-3 bg-white text-indigo-700 text-xl  rounded-lg mt-5 flex flex-row gap-3 justify-between  border-[1px] border-indigo-200"> Validator Votes
+                                        </h1>
+                                        <div className="flex flex-row gap-5 w-1/2 my-3 relative h-[4rem]">
+                                            <div className="absolute w-full"><DropdownValidatorVote getSelectedValidator={getSelectedValidator} validators={props.validators} getCurrentValidator={props.getCurrentValidator} updateState={updateState} /></div>
+                                        </div>
+                                        <div className="h-full  flex flex-col max-h-80">
+                                            <div className="flex flex-row start gap-20 lg:text-lg sm:text-sm text-indigo-700 pb-3 h-[17.5rem]">
+                                                <div className='flex-auto flex flex-col gap-4 text-3xl  h-full border-[1px] border-indigo-200 rounded-lg overflow-hidden'>
+                                                    <div className='bg-white p-4'> PROPOSAL {props.currentProposal.id}</div>
+                                                    <div className='font-semibold px-4'>{selectedValidator.moniker}</div>
+                                                    <div className='pb-4'>
+                                                        {selectedValidator.length !== 0 ? (
+                                                            <><span className='px-4'>
+                                                                {validatorVote !== "" ? (
+                                                                    <>
+                                                                        voted
+                                                                        {validatorVote[0].votes[0].option == 'VOTE_OPTION_ABSTAIN' ? (
+                                                                            <strong className='text-gray-500 ml-2'>ABSTAIN</strong>
+                                                                        ) : validatorVote[0].votes[0].option == 'VOTE_OPTION_YES' ? (
+                                                                            <strong className='text-green-400 ml-2'>YES</strong>
+                                                                        ) : validatorVote[0].votes[0].option == 'VOTE_OPTION_NO' ? (
+                                                                            <strong className='text-rose-500 ml-2'>NO</strong>
+                                                                        ) : validatorVote[0].votes[0].option == 'VOTE_OPTION_NO_WITH_VETO' ? (
+                                                                            <strong className='text-rose-700 ml-2'>NO WITH VETO</strong>
+                                                                        ) : (
+                                                                            <strong>DID NOT VOTE</strong>
+                                                                        )}
+                                                                    </>
+                                                                ) : (
+                                                                    <>
+                                                                        <strong>DID NOT VOTE</strong>
+
+                                                                    </>
+                                                                )}
+                                                            </span>
+                                                                <Link to='/validators' onClick={() => {
+                                                                    console.log(selectedValidator)
+                                                                    props.sendUpdate(true);
+                                                                    props.getCurrentValidator(selectedValidator)
+                                                                }}>
+                                                                    <div className='px-4 text-lg pt-4 cursor-pointer transition ease-out delay-50 text-color hover:text-indigo-400'>View Validator Profile</div>
+                                                                </Link>
+                                                            </>
+                                                        ) : (
+                                                            <div className='px-4 font-semibold'>SELECT A VALIDATOR</div>
+                                                        )}
+
+
+                                                    </div>
+                                                </div>
                                             </div>
+
                                         </div>
                                     </div>
+                                </div>
 
+                                <div className='w-1/2'>
+                                    <h1 className="w-full py-3 px-3 bg-white text-indigo-700 text-xl  rounded-lg mt-5 border-[1px] border-indigo-200">Turnout Rank</h1>
+                                    <div className="w-full py-3 px-3 text-indigo-700 font-medium lg:text-2xl sm:text-lg">Proposal {props.currentProposal.id} is <strong>#{turnoutRank}</strong> ranked by voter turnout</div>
+                                    <div className="w-full py-1 flex flex-col lg:text-lg sm:text-sm ">
+                                        <div className="flex flex-row justify-between bg-white px-3 py-1 rounded-t-md">
+                                            <span className='text-green-500'>Yes</span> <span className="text-indigo-700 font-semibold text-md">{votesArray[0]} ATOM</span>
+                                        </div>
+                                        <div className="flex flex-row justify-between bg-violet-100 px-3 py-1">
+                                            <span className='text-rose-500'>No</span><span className="text-indigo-700 font-semibold text-md">{votesArray[1]} ATOM</span>
+                                        </div>
+                                        <div className="flex flex-row justify-between bg-white px-3 py-1">
+                                            <span className='text-rose-700'>No With Veto</span><span className="text-indigo-700 font-semibold text-md">{votesArray[2]} ATOM</span>
+                                        </div>
+                                        <div className="flex flex-row justify-between bg-violet-100 px-3 py-1 ">
+                                            <span className='text-gray-500'>Abstain</span><span className="text-indigo-700 font-semibold text-md">{votesArray[3]} ATOM</span>
+                                        </div>
+                                        <div className="flex flex-row justify-between bg-white px-3 py-1 rounded-b-md">
+                                            <span className='font-semibold text-indigo-700'>TOTAL</span><span className="text-indigo-700 font-semibold text-md">{votesArray[4]} ATOM</span>
+                                        </div>
+                                    </div>
+                                    <h1 className="w-full py-3 px-3 bg-white text-indigo-700 text-xl  rounded-lg mt-5  border-[1px] border-indigo-200">Participation rate</h1>
+                                    <div className="w-full py-3 px-3 text-indigo-700 font-medium lg:text-2xl sm:text-lg"> Proposal {props.currentProposal.id} had a participation rate of <strong>{participationRate}% </strong> amongst ATOM stakers </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div className='w-1/2'>
-                            <h1 className="w-full py-3 px-3 bg-white text-indigo-700 text-xl  rounded-lg mt-5 border-[1px] border-indigo-200">Turnout Rank</h1>
-                            <div className="w-full py-3 px-3 text-indigo-700 font-medium lg:text-2xl sm:text-lg">Proposal {props.currentProposal.id} is <strong>#{turnoutRank}</strong> ranked by voter turnout</div>
-                            <div className="w-full py-1 flex flex-col lg:text-lg sm:text-sm ">
-                                <div className="flex flex-row justify-between bg-white px-3 py-1 rounded-t-md">
-                                    <span className='text-green-500'>Yes</span> <span className="text-indigo-700 font-semibold text-md">{votesArray[0]} ATOM</span>
-                                </div>
-                                <div className="flex flex-row justify-between bg-violet-100 px-3 py-1">
-                                    <span className='text-rose-500'>No</span><span className="text-indigo-700 font-semibold text-md">{votesArray[1]} ATOM</span>
-                                </div>
-                                <div className="flex flex-row justify-between bg-white px-3 py-1">
-                                    <span className='text-rose-700'>No With Veto</span><span className="text-indigo-700 font-semibold text-md">{votesArray[2]} ATOM</span>
-                                </div>
-                                <div className="flex flex-row justify-between bg-violet-100 px-3 py-1 ">
-                                    <span className='text-gray-500'>Abstain</span><span className="text-indigo-700 font-semibold text-md">{votesArray[3]} ATOM</span>
-                                </div>
-                                <div className="flex flex-row justify-between bg-white px-3 py-1 rounded-b-md">
-                                    <span className='font-semibold text-indigo-700'>TOTAL</span><span className="text-indigo-700 font-semibold text-md">{votesArray[4]} ATOM</span>
+                            <div className='w-full flex flex-row gap-5 mt-8'>
+                                <div className="w-full h-80 flex flex-col items-center gap-5 ">
+                                    <h1 className="py-3 px-3 bg-white text-indigo-700 text-xl  rounded-lg w-full  border-[1px] border-indigo-200">Votes (ATOM)</h1>
+                                    <div className="w-full h-60 flex justify-center">
+                                        <PieChart2 chartData2={votesArrayForChart} />
+                                    </div>
                                 </div>
                             </div>
-                            <h1 className="w-full py-3 px-3 bg-white text-indigo-700 text-xl  rounded-lg mt-5  border-[1px] border-indigo-200">Participation rate</h1>
-                            <div className="w-full py-3 px-3 text-indigo-700 font-medium lg:text-2xl sm:text-lg"> Proposal {props.currentProposal.id} had a participation rate of <strong>{participationRate}% </strong> amongst ATOM stakers </div>
+
+
                         </div>
                     </div>
+                </>
+            ) : (
+                <div></div>
+            )}
 
-                    <div className='w-full flex flex-row gap-5 mt-8'>
-                        <div className="w-full h-80 flex flex-col items-center gap-5 ">
-                            <h1 className="py-3 px-3 bg-white text-indigo-700 text-xl  rounded-lg w-full  border-[1px] border-indigo-200">Votes</h1>
-                            <div className="w-full h-60 flex justify-center">
-                                <PieChart2 chartData2={votesArrayForChart}/>
-                            </div>
-                        </div>
-                    </div>
-
-
-                </div>
-            </div>
 
         </div>
     )

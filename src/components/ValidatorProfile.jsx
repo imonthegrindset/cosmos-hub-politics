@@ -1,7 +1,6 @@
 import Dropdown from "./Dropdown"
 import DropdownDisplay from "./DropdownPercentage"
 import PieChart from "./PieChart"
-import HorizontalBarChart from "../BarChart"
 import { useState, useEffect, useRef } from "react"
 import { Link } from 'react-router-dom'
 
@@ -11,10 +10,8 @@ export default function ValidatorProfile(props) {
     const [update, setUpdate] = useState(false);
     const [renderAgain, setRenderAgain] = useState(false);
     const [votingPower, setVotingPower] = useState('')
-    const [votingPowerScore, setVotingPowerScore] = useState('')
     const [votes, setVotes] = useState([])
     const [percentageDisplay, setPercentageDisplay] = useState(true)
-    const [recentDisplay, setRecentDisplay] = useState(true);
     const [votingRate, setVotingRate] = useState('');
     const [votingRateInteger, setVotingRateInteger] = useState(0)
     const [filteredVotes, setFilteredVotes] = useState([])
@@ -25,9 +22,20 @@ export default function ValidatorProfile(props) {
 
     const pastProposals = useRef();
 
-    useEffect(() => {
+    // useEffect(() => {
+    //     // if(props.sentUpdate) {
+    //     //     setUpdate(true);
+    //     // } else {
+    //     //     return
+    //     // }
+    //     return () => {
+    //         props.getCurrentValidator("")
+    //         // props.sendUpdate(false)
+    //     }
+    // }, [])
+
+    useEffect(() => { // if first possible solution does not work, try to put && !sentUpdate after first Render here
         if (firstRender) {
-            props.getCurrentValidator("")
             setFirstRender(false);
             return;
         }
@@ -41,18 +49,6 @@ export default function ValidatorProfile(props) {
                 let validatorAtoms = Number(props.currentValidator.tokens.substr(0, props.currentValidator.tokens.length - 6));
                 let votingPower = ((validatorAtoms / bondedAtoms) * 100);
                 setVotingPower(votingPower.toFixed(2).toString() + '%');
-
-                if (votingPower > 4) {
-                    setVotingPowerScore('Very High');
-                } else if (1.5 < votingPower && votingPower < 4) {
-                    setVotingPowerScore('High');
-                } else if (0.5 < votingPower && votingPower < 1.5) {
-                    setVotingPowerScore('Medium');
-                } else if (0.25 < votingPower && votingPower < 0.5) {
-                    setVotingPowerScore('Low');
-                } else if (0 < votingPower && votingPower < 0.25) {
-                    setVotingPowerScore('Very Low')
-                }
             })
 
         fetch(`https://api.mintscan.io/v1/cosmos/account/${props.currentValidator.account_address}/votes`)
@@ -63,7 +59,8 @@ export default function ValidatorProfile(props) {
                 array.push(data);
                 setVotes(array[0].votes);
             })
-    }, [update])
+    }, [update, props.sentUpdate])
+    //possible solution put sentUpdate as a parameter to trigger this too
 
     useEffect(() => {
         if (firstRender) { setFirstRender(false); }
@@ -144,7 +141,7 @@ export default function ValidatorProfile(props) {
         calculateVotingRate(value);
     }
 
-    
+
     const text = useRef();
 
     const copyContent = async () => {
@@ -204,32 +201,32 @@ export default function ValidatorProfile(props) {
                                         {percentageDisplay ? (
                                             <div className="w-full py-3 px-3 text-indigo-700 font-medium lg:text-2xl sm:text-lg">This Validator has a voting rate of <strong>{votingRate}%</strong> in the past <strong>{pastPropsValue}</strong> proposals</div>
                                         ) : (
-                                            <div className="w-full py-3 px-3 text-indigo-700 font-medium lg:text-2xl sm:text-lg">This Validator has a voting rate of <strong>{votingRateInteger}</strong> in the past <strong>{pastPropsValue}</strong> proposals</div>
+                                            <div className="w-full py-3 px-3 text-indigo-700 font-medium lg:text-2xl sm:text-lg">This Validator has voted on <strong>{votingRateInteger}</strong> of the past <strong>{pastPropsValue}</strong> proposals</div>
                                         )}
 
                                         <div className="w-full py-1 flex flex-col lg:text-lg sm:text-sm ">
                                             {percentageDisplay ? (
                                                 <>
                                                     <div className="flex flex-row justify-between bg-white px-3 py-1 rounded-t-md">
-                                                        <span>Yes</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].yes[0]}% of the votes</span>
+                                                        <span className="text-indigo-700">Yes</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].yes[0]}% of the votes</span>
                                                     </div><div className="flex flex-row justify-between bg-violet-100 px-3 py-1">
-                                                        <span>No</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].no[0]}% of the votes</span>
+                                                        <span className="text-indigo-700">No</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].no[0]}% of the votes</span>
                                                     </div><div className="flex flex-row justify-between bg-white px-3 py-1">
-                                                        <span>No With Veto</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].veto[0]}% of the votes</span>
+                                                        <span className="text-indigo-700">No With Veto</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].veto[0]}% of the votes</span>
                                                     </div><div className="flex flex-row justify-between bg-violet-100 px-3 py-1 rounded-b-md">
-                                                        <span>Abstain</span><span className="text-indigo-700 font-semibold ">{voteOptionsStats[0].abstain[0]}% of the votes</span>
+                                                        <span className="text-indigo-700">Abstain</span><span className="text-indigo-700 font-semibold ">{voteOptionsStats[0].abstain[0]}% of the votes</span>
                                                     </div>
                                                 </>
                                             ) : (
                                                 <>
                                                     <div className="flex flex-row justify-between bg-white px-3 py-1 rounded-t-md">
-                                                        <span>Yes</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].yes[1]} votes</span>
+                                                        <span className="text-indigo-700">Yes</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].yes[1]} votes</span>
                                                     </div><div className="flex flex-row justify-between bg-violet-100 px-3 py-1">
-                                                        <span>No</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].no[1]} votes</span>
+                                                        <span className="text-indigo-700">No</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].no[1]} votes</span>
                                                     </div><div className="flex flex-row justify-between bg-white px-3 py-1">
-                                                        <span>No With Veto</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].veto[1]} votes</span>
+                                                        <span className="text-indigo-700">No With Veto</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].veto[1]} votes</span>
                                                     </div><div className="flex flex-row justify-between bg-violet-100 px-3 py-1 rounded-b-md">
-                                                        <span>Abstain</span><span className="text-indigo-700 font-semibold ">{voteOptionsStats[0].abstain[1]} votes</span>
+                                                        <span className="text-indigo-700">Abstain</span><span className="text-indigo-700 font-semibold ">{voteOptionsStats[0].abstain[1]} votes</span>
                                                     </div>
                                                 </>
                                             )}
@@ -280,7 +277,7 @@ export default function ValidatorProfile(props) {
 
                                                                 }
                                                                 }>
-                                                                    <div >View Proposal Details</div>
+                                                                    <div className=" transition ease-out delay-50 text-color hover:text-indigo-400 " >View Proposal Details</div>
                                                                 </Link>
 
                                                             </div>
@@ -312,7 +309,7 @@ export default function ValidatorProfile(props) {
 
                                                                 }
                                                                 }>
-                                                                    <div>View Proposal Details</div>
+                                                                    <div className="transition ease-out delay-50 text-color hover:text-indigo-400">View Proposal Details</div>
                                                                 </Link>
                                                             </div>
                                                         )
