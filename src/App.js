@@ -72,9 +72,8 @@ function App() {
       })
 
     function handleOrientationChange() {
-      console.log(window.screen.orientation.type);
+      // console.log(window.screen.orientation.type);
       if (window.screen.orientation.type === 'portrait-primary' && window.innerWidth < 768) {
-        console.log('portrait');
         setDevice("portrait")
       } else {
         setDevice("");
