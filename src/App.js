@@ -16,7 +16,6 @@ function App() {
   const [currentProposal, setCurrentProposal] = useState([])
   const [stakedAtoms, setStakedAtoms] = useState(0);
   const [sentUpdate, setSentUpdate] = useState(false);
-  // const [fromValidators, setFromValidators] = useState(0);
 
 
   const getCurrentValidator = (current) => {
@@ -28,7 +27,6 @@ function App() {
   }
 
   const sendUpdate = (value) => {
-    console.log('sends')
     setSentUpdate(value);
   }
 
@@ -51,7 +49,6 @@ function App() {
         return res.json()
       })
       .then(data => {
-        console.log(data);
         setProposals(data);
       })
 
@@ -65,13 +62,13 @@ function App() {
         let validatorArray = data;
 
         let filtered = validatorArray.filter(validator => validatorArray.indexOf(validator) < 175)
-        console.log(filtered);
 
         setValidators(filtered);
       })
-
-
+      
   }, [])
+
+  
 
   useEffect(() => {
     sortPropsTurnout();
@@ -97,6 +94,12 @@ function App() {
       })
 
     setTurnoutProposals(sortedTurnout)
+  }
+
+  function promptRotate() {
+    if (window.matchMedia("(orientation: portrait)").matches) {
+      alert("Please rotate your device to landscape mode for a better viewing experience.");
+    }
   }
 
   return (

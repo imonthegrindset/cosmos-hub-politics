@@ -22,20 +22,15 @@ export default function ValidatorProfile(props) {
 
     const pastProposals = useRef();
 
-    // useEffect(() => {
-    //     // if(props.sentUpdate) {
-    //     //     setUpdate(true);
-    //     // } else {
-    //     //     return
-    //     // }
-    //     return () => {
-    //         props.getCurrentValidator("")
-    //         // props.sendUpdate(false)
-    //     }
-    // }, [])
+    useEffect(() => {
+        return () => {
+            props.getCurrentValidator("")
+            props.sendUpdate(false)
+        }
+    }, [])
 
-    useEffect(() => { // if first possible solution does not work, try to put && !sentUpdate after first Render here
-        if (firstRender) {
+    useEffect(() => {
+        if (firstRender && !props.sentUpdate) {
             setFirstRender(false);
             return;
         }
@@ -60,7 +55,7 @@ export default function ValidatorProfile(props) {
                 setVotes(array[0].votes);
             })
     }, [update, props.sentUpdate])
-    //possible solution put sentUpdate as a parameter to trigger this too
+
 
     useEffect(() => {
         if (firstRender) { setFirstRender(false); }
@@ -141,6 +136,10 @@ export default function ValidatorProfile(props) {
         calculateVotingRate(value);
     }
 
+    const replacenan = (value) => {
+        return value.replace(/NaN/g, "0");
+    }
+
 
     const text = useRef();
 
@@ -198,127 +197,130 @@ export default function ValidatorProfile(props) {
                                                 </select>
                                             </div>
                                         </h1>
-                                        {percentageDisplay ? (
-                                            <div className="w-full py-3 px-3 text-indigo-700 font-medium lg:text-2xl sm:text-lg">This Validator has a voting rate of <strong>{votingRate}%</strong> in the past <strong>{pastPropsValue}</strong> proposals</div>
+                                        {votes.length !== 0 ? (
+                                            <>
+                                                {percentageDisplay ? (
+                                                    <div className="w-full py-3 px-3 text-indigo-700 font-medium lg:text-2xl sm:text-lg">This Validator has a voting rate of <strong>{votingRate}%</strong> in the past <strong>{pastPropsValue}</strong> proposals</div>
+                                                ) : (
+                                                    <div className="w-full py-3 px-3 text-indigo-700 font-medium lg:text-2xl sm:text-lg">This Validator has voted on <strong>{votingRateInteger}</strong> of the past <strong>{pastPropsValue}</strong> proposals</div>
+                                                )}
+
+                                                <div className="w-full py-1 flex flex-col lg:text-lg sm:text-sm ">
+                                                    {percentageDisplay ? (
+                                                        <>
+                                                            <div className="flex flex-row justify-between bg-white px-3 py-1 rounded-t-md">
+                                                                <span className="text-indigo-700">Yes</span><span className="text-indigo-700 font-semibold">{replacenan(voteOptionsStats[0].yes[0])}% of the votes</span>
+                                                            </div><div className="flex flex-row justify-between bg-violet-100 px-3 py-1">
+                                                                <span className="text-indigo-700">No</span><span className="text-indigo-700 font-semibold">{replacenan(voteOptionsStats[0].no[0])}% of the votes</span>
+                                                            </div><div className="flex flex-row justify-between bg-white px-3 py-1">
+                                                                <span className="text-indigo-700">No With Veto</span><span className="text-indigo-700 font-semibold">{replacenan(voteOptionsStats[0].veto[0])}% of the votes</span>
+                                                            </div><div className="flex flex-row justify-between bg-violet-100 px-3 py-1 rounded-b-md">
+                                                                <span className="text-indigo-700">Abstain</span><span className="text-indigo-700 font-semibold ">{replacenan(voteOptionsStats[0].abstain[0])}% of the votes</span>
+                                                            </div>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <div className="flex flex-row justify-between bg-white px-3 py-1 rounded-t-md">
+                                                                <span className="text-indigo-700">Yes</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].yes[1]} votes</span>
+                                                            </div><div className="flex flex-row justify-between bg-violet-100 px-3 py-1">
+                                                                <span className="text-indigo-700">No</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].no[1]} votes</span>
+                                                            </div><div className="flex flex-row justify-between bg-white px-3 py-1">
+                                                                <span className="text-indigo-700">No With Veto</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].veto[1]} votes</span>
+                                                            </div><div className="flex flex-row justify-between bg-violet-100 px-3 py-1 rounded-b-md">
+                                                                <span className="text-indigo-700">Abstain</span><span className="text-indigo-700 font-semibold ">{voteOptionsStats[0].abstain[1]} votes</span>
+                                                            </div>
+                                                        </>
+                                                    )}
+
+                                                </div>
+                                            </>
                                         ) : (
-                                            <div className="w-full py-3 px-3 text-indigo-700 font-medium lg:text-2xl sm:text-lg">This Validator has voted on <strong>{votingRateInteger}</strong> of the past <strong>{pastPropsValue}</strong> proposals</div>
+                                            <h1 className="pt-2 px-3 text-2xl text-rose-500 font-bold">This validator has not voted in the past 45 proposals</h1>
                                         )}
-
-                                        <div className="w-full py-1 flex flex-col lg:text-lg sm:text-sm ">
-                                            {percentageDisplay ? (
-                                                <>
-                                                    <div className="flex flex-row justify-between bg-white px-3 py-1 rounded-t-md">
-                                                        <span className="text-indigo-700">Yes</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].yes[0]}% of the votes</span>
-                                                    </div><div className="flex flex-row justify-between bg-violet-100 px-3 py-1">
-                                                        <span className="text-indigo-700">No</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].no[0]}% of the votes</span>
-                                                    </div><div className="flex flex-row justify-between bg-white px-3 py-1">
-                                                        <span className="text-indigo-700">No With Veto</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].veto[0]}% of the votes</span>
-                                                    </div><div className="flex flex-row justify-between bg-violet-100 px-3 py-1 rounded-b-md">
-                                                        <span className="text-indigo-700">Abstain</span><span className="text-indigo-700 font-semibold ">{voteOptionsStats[0].abstain[0]}% of the votes</span>
-                                                    </div>
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <div className="flex flex-row justify-between bg-white px-3 py-1 rounded-t-md">
-                                                        <span className="text-indigo-700">Yes</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].yes[1]} votes</span>
-                                                    </div><div className="flex flex-row justify-between bg-violet-100 px-3 py-1">
-                                                        <span className="text-indigo-700">No</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].no[1]} votes</span>
-                                                    </div><div className="flex flex-row justify-between bg-white px-3 py-1">
-                                                        <span className="text-indigo-700">No With Veto</span><span className="text-indigo-700 font-semibold">{voteOptionsStats[0].veto[1]} votes</span>
-                                                    </div><div className="flex flex-row justify-between bg-violet-100 px-3 py-1 rounded-b-md">
-                                                        <span className="text-indigo-700">Abstain</span><span className="text-indigo-700 font-semibold ">{voteOptionsStats[0].abstain[1]} votes</span>
-                                                    </div>
-                                                </>
-                                            )}
-
-                                        </div>
                                     </div>
                                 </div>
 
-                                <div className='w-1/2 flex flex-col'>
-                                    <h1 className="py-3 px-3 bg-white text-indigo-700 text-xl  rounded-lg mt-5  border-[1px] border-indigo-200 flex flex-row justify-between"> Proposal Votes
-                                        <div>
-                                            <span>sort by</span>
-                                            <select className="bg-white  border-2 outline-none border-indigo-700 rounded-md text-sm font-semibold lg:px-1 sm:px-0 sm:py-0 ml-3">
-                                                <option value="">Recent</option>
-                                                <option value="">Turnout</option>
-                                            </select>
-                                        </div>
-                                    </h1>
-                                    <div className="h-full py-3 px-3 flex flex-col overflow-y-scroll max-h-80">
-                                        {votes.map(vote => {
-                                            return (
-                                                <>
-                                                    {
-                                                        votes.indexOf(vote) === 0 ? (
-                                                            <div className="flex flex-row start gap-20 lg:text-lg sm:text-sm text-indigo-700 border-b-2 border-indigo-700 pb-3">
-                                                                <span>Proposal {vote.proposal_id}</span>
-                                                                {vote.votes[0].option === 'VOTE_OPTION_YES' ? (
-                                                                    <div style={{ color: 'green' }}>YES</div>
-                                                                ) : vote.votes[0].option === 'VOTE_OPTION_NO' ? (
-                                                                    <div style={{ color: 'rgb(214, 0, 0)' }}>NO</div>
-                                                                ) : vote.votes[0].option === 'VOTE_OPTION_ABSTAIN' ? (
-                                                                    <div style={{ color: 'rgb(65, 65, 65)' }}>ABSTAIN</div>
-                                                                ) : vote.votes[0].option === 'VOTE_OPTION_NO_WITH_VETO' ? (
-                                                                    <div style={{ color: 'rgb(214, 0, 0)' }}>NO WITH VETO</div>
-                                                                ) : (
-                                                                    <span></span>
-                                                                )}
-                                                                <Link className="flex-auto flex justify-end" to='/proposals' onClick={() => {
-                                                                    function sendProp() {
-                                                                        props.proposals.map(prop => {
-                                                                            if (prop.id == vote.proposal_id) {
-                                                                                props.getCurrentProposal(prop);
-                                                                            }
-                                                                        })
-
-                                                                    };
-                                                                    sendProp();
-
-                                                                }
-                                                                }>
-                                                                    <div className=" transition ease-out delay-50 text-color hover:text-indigo-400 " >View Proposal Details</div>
-                                                                </Link>
-
-                                                            </div>
-                                                        ) : (
-                                                            <div className="flex flex-row gap-20 lg:text-lg sm:text-sm text-indigo-700 border-b-2 border-indigo-700 py-3">
-                                                                <span>Proposal {vote.proposal_id}</span>
-                                                                {vote.votes[0].option === 'VOTE_OPTION_YES' ? (
-                                                                    <div style={{ color: 'green' }}>YES</div>
-                                                                ) : vote.votes[0].option === 'VOTE_OPTION_NO' ? (
-                                                                    <div style={{ color: 'rgb(214, 0, 0)' }}>NO</div>
-                                                                ) : vote.votes[0].option === 'VOTE_OPTION_ABSTAIN' ? (
-                                                                    <div style={{ color: 'rgb(65, 65, 65)' }}>ABSTAIN</div>
-                                                                ) : vote.votes[0].option === 'VOTE_OPTION_NO_WITH_VETO' ? (
-                                                                    <div style={{ color: 'rgb(214, 0, 0)' }}>NO WITH VETO</div>
-                                                                ) : (
-                                                                    <span></span>
-                                                                )}
-                                                                <Link className="flex flex-auto justify-end" to="/proposals" onClick={() => {
-                                                                    function sendProp() {
-                                                                        props.proposals.map(prop => {
-                                                                            if (prop.id == vote.proposal_id) {
-                                                                                props.getCurrentProposal(prop);
-                                                                            }
-                                                                        })
-
-                                                                    };
-                                                                    sendProp();
-
-
-                                                                }
-                                                                }>
-                                                                    <div className="transition ease-out delay-50 text-color hover:text-indigo-400">View Proposal Details</div>
-                                                                </Link>
-                                                            </div>
-                                                        )
-                                                    }
-                                                </>
-                                            )
-                                        })}
-                                    </div>
-                                </div>
+                                {votes.length !== 0 ? (
+                                     <div className='w-1/2 flex flex-col'>
+                                     <h1 className="py-3 px-3 bg-white text-indigo-700 text-xl  rounded-lg mt-5  border-[1px] border-indigo-200 flex flex-row justify-between"> Proposal Votes
+                                         <div>
+                                             <span>sort by</span>
+                                             <select className="bg-white  border-2 outline-none border-indigo-700 rounded-md text-sm font-semibold lg:px-1 sm:px-0 sm:py-0 ml-3">
+                                                 <option value="">Recent</option>
+                                                 <option value="">Turnout</option>
+                                             </select>
+                                         </div>
+                                     </h1>
+                                     <div className="h-full py-3 px-3 flex flex-col overflow-y-scroll max-h-80">
+                                         {votes.map(vote => {
+                                             return (
+                                                 <>
+                                                     {
+                                                         votes.indexOf(vote) === 0 ? (
+                                                             <div className="flex flex-row start gap-20 lg:text-lg sm:text-sm text-indigo-700 border-b-2 border-indigo-700 pb-3">
+                                                                 <span>Proposal {vote.proposal_id}</span>
+                                                                 {vote.votes[0].option === 'VOTE_OPTION_YES' ? (
+                                                                     <div style={{ color: 'green' }}>YES</div>
+                                                                 ) : vote.votes[0].option === 'VOTE_OPTION_NO' ? (
+                                                                     <div style={{ color: 'rgb(214, 0, 0)' }}>NO</div>
+                                                                 ) : vote.votes[0].option === 'VOTE_OPTION_ABSTAIN' ? (
+                                                                     <div style={{ color: 'rgb(65, 65, 65)' }}>ABSTAIN</div>
+                                                                 ) : vote.votes[0].option === 'VOTE_OPTION_NO_WITH_VETO' ? (
+                                                                     <div style={{ color: 'rgb(214, 0, 0)' }}>NO WITH VETO</div>
+                                                                 ) : (
+                                                                     <span></span>
+                                                                 )}
+                                                                 <Link className="flex-auto flex justify-end" to='/proposals' onClick={() => {
+                                                                     function sendProp() {
+                                                                         props.proposals.map(prop => {
+                                                                             if (prop.id == vote.proposal_id) {
+                                                                                 props.getCurrentProposal(prop);
+                                                                             }
+                                                                         })
+ 
+                                                                     };
+                                                                     sendProp();
+ 
+                                                                 }
+                                                                 }>
+                                                                     <div className=" transition ease-out delay-50 text-color hover:text-indigo-400 " >View Proposal Details</div>
+                                                                 </Link>
+ 
+                                                             </div>
+                                                         ) : (
+                                                             <div className="flex flex-row gap-20 lg:text-lg sm:text-sm text-indigo-700 border-b-2 border-indigo-700 py-3">
+                                                                 <span>Proposal {vote.proposal_id}</span>
+                                                                 {vote.votes[0].option === 'VOTE_OPTION_YES' ? (
+                                                                     <div style={{ color: 'green' }}>YES</div>
+                                                                 ) : vote.votes[0].option === 'VOTE_OPTION_NO' ? (
+                                                                     <div style={{ color: 'rgb(214, 0, 0)' }}>NO</div>
+                                                                 ) : vote.votes[0].option === 'VOTE_OPTION_ABSTAIN' ? (
+                                                                     <div style={{ color: 'rgb(65, 65, 65)' }}>ABSTAIN</div>
+                                                                 ) : vote.votes[0].option === 'VOTE_OPTION_NO_WITH_VETO' ? (
+                                                                     <div style={{ color: 'rgb(214, 0, 0)' }}>NO WITH VETO</div>
+                                                                 ) : (
+                                                                     <span></span>
+                                                                 )}
+                                                                 <Link className="flex flex-auto justify-end" to="/proposals" onClick={() => {
+                                                                     function sendProp() {
+                                                                         props.proposals.map(prop => {
+                                                                             if (prop.id == vote.proposal_id) {
+                                                                                 props.getCurrentProposal(prop);
+                                                                             }})};
+                                                                     sendProp();}}>
+                                                                     <div className="transition ease-out delay-50 text-color hover:text-indigo-400">View Proposal Details</div>
+                                                                 </Link>
+                                                             </div>
+                                                         )
+                                                     }
+                                                 </>
+                                             )
+                                         })}
+                                     </div>
+                                 </div>
+                                ) : (
+                                    <div></div>
+                                )}
                             </div>
                         </div></>
                 )}
@@ -328,7 +330,7 @@ export default function ValidatorProfile(props) {
 
             </div>
 
-            {props.currentValidator.length === 0 ? (
+            {props.currentValidator.length === 0 || votes.length === 0 ? (
                 <div></div>
             ) : (
                 <>

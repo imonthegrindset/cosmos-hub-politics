@@ -52,7 +52,6 @@ export default function Proposals(props) {
     }, [selectedValidator])
 
     const getSelectedValidator = (validator) => {
-        console.log(validator);
         setSelectedValidator(validator)
     }
 
@@ -73,34 +72,31 @@ export default function Proposals(props) {
                     setValidatorVote("")
                     return;
                 } else {
-                    console.log(vote);
                     setValidatorVote(vote);
                 }
             })
     }
 
-    //written by ChatGPT 
+
     function toReadableDate(dateString) {
         if (dateString === undefined || dateString === null) {
             return
         }
-        // Parse the input string to extract the year, month, and day
+
         const year = dateString.substring(0, 4);
         const month = dateString.substring(5, 7);
         const day = dateString.substring(8, 10);
 
-        // Use the parsed values to construct a human-readable date string
         return `${month}/${day}/${year}`;
     }
 
-    //written by ChatGPT 
+
     function removeLineBreaks(text) {
         if (text === undefined || text === null) {
             return
         }
         return text.replace(/\n/g, "");
     }
-
 
     function getTurnoutRank(id) {
         id = props.currentProposal.id;
@@ -216,7 +212,7 @@ export default function Proposals(props) {
                             </div>
 
                             <div className='w-100 h-80 bg-white rounded-lg overflow-y-auto flex flex-col gap-3'>
-                                <h2 className='text-3xl flex flex-row justify-between py-5 px-5 text-indigo-700 font-semibold w-full bg-violet-100'>{props.currentProposal.title}<div className='text-indigo-700 text-lg font-regular'>proposed by <span className='text-2xl ml-1 font-semibold'>{props.currentProposal.moniker ? props.currentProposal.moniker : props.currentProposal.proposer}</span></div></h2>
+                                <h2 className='lg:text-3xl md:text-2xl sm:text-xl flex flex-row justify-between py-5 px-5 text-indigo-700 font-semibold w-full bg-violet-100'>{props.currentProposal.title}<div className='text-indigo-700 lg:text-lg md:text-md sm:text-md font-regular'>proposed by <span className='lg:text-2xl md:text-xl sm:text-lg ml-1 font-semibold'>{props.currentProposal.moniker ? props.currentProposal.moniker : props.currentProposal.proposer}</span></div></h2>
                                 <p className='w-full  h-100 py-5 px-5 text-indigo-700 overflow-y-auto sm:leading-8 lg:leading-8 sm:text-sm lg:text-md  md:text-md md:leading-8'> {removeLineBreaks(props.currentProposal.description)}</p>
                             </div>
                         </div></>
@@ -271,7 +267,6 @@ export default function Proposals(props) {
                                                                 )}
                                                             </span>
                                                                 <Link to='/validators' onClick={() => {
-                                                                    console.log(selectedValidator)
                                                                     props.sendUpdate(true);
                                                                     props.getCurrentValidator(selectedValidator)
                                                                 }}>
