@@ -19,6 +19,7 @@ function App() {
   const [sentUpdate, setSentUpdate] = useState(false);
   const [rotateMessage, setRotateMessage] = useState('Please Rotate Your Device')
   const [device, setDevice] = useState("");
+  const [render, setRender] = useState(true);
 
   const getCurrentValidator = (current) => {
     setCurrentValidator(current);
@@ -72,8 +73,8 @@ function App() {
 
     function handleOrientationChange() {
       console.log(window.screen.orientation.type);
-      console.log(window.navigator.userAgent)
-      if (window.screen.orientation.type === 'portrait-primary') {
+      if (window.screen.orientation.type === 'portrait-primary' && window.innerWidth < 768) {
+        console.log('portrait');
         setDevice("portrait")
       } else {
         setDevice("");
