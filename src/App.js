@@ -36,40 +36,40 @@ function App() {
 
 
   useEffect(() => {
-    // fetch('https://api.mintscan.io/v1/utils/params/chain/cosmos')
-    // .then(res => {
-    //     return res.json()
-    // })
-    // .then(data => {
-    //     let bondedAtoms = data.params.staking_pool.pool.bonded_tokens;
-    //     bondedAtoms = Number(bondedAtoms.substr(0, bondedAtoms.length - 6));
+    fetch('https://api.mintscan.io/v1/utils/params/chain/cosmos')
+    .then(res => {
+        return res.json()
+    })
+    .then(data => {
+        let bondedAtoms = data.params.staking_pool.pool.bonded_tokens;
+        bondedAtoms = Number(bondedAtoms.substr(0, bondedAtoms.length - 6));
 
-    //     setStakedAtoms(bondedAtoms);
-    // })
+        setStakedAtoms(bondedAtoms);
+    })
 
-    // fetch('https://api.mintscan.io/v1/cosmos/proposals', {
-    //   method: 'get'
-    // })
-    //   .then(res => {
-    //     return res.json()
-    //   })
-    //   .then(data => {
-    //     setProposals(data);
-    //   })
+    fetch('https://api.mintscan.io/v1/cosmos/proposals', {
+      method: 'get'
+    })
+      .then(res => {
+        return res.json()
+      })
+      .then(data => {
+        setProposals(data);
+      })
 
-    // fetch('https://api.mintscan.io/v1/cosmos/validators', {
-    //   method: 'get'
-    // })
-    //   .then(res => {
-    //     return res.json()
-    //   })
-    //   .then(data => {
-    //     let validatorArray = data;
+    fetch('https://api.mintscan.io/v1/cosmos/validators', {
+      method: 'get'
+    })
+      .then(res => {
+        return res.json()
+      })
+      .then(data => {
+        let validatorArray = data;
 
-    //     let filtered = validatorArray.filter(validator => validatorArray.indexOf(validator) < 175)
+        let filtered = validatorArray.filter(validator => validatorArray.indexOf(validator) < 175)
 
-    //     setValidators(filtered);
-    //   })
+        setValidators(filtered);
+      })
 
     function handleOrientationChange() {
       console.log(window.screen.orientation.type);
