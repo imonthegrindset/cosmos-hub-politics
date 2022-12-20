@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/cosmos-hub-politics/static/css/main.7e491257.css",
-    "main.js": "/cosmos-hub-politics/static/js/main.050aaf09.js",
+    "main.css": "/cosmos-hub-politics/static/css/main.fcbb54bf.css",
+    "main.js": "/cosmos-hub-politics/static/js/main.38848e0f.js",
     "static/js/787.a17014d2.chunk.js": "/cosmos-hub-politics/static/js/787.a17014d2.chunk.js",
     "static/media/picwish.png": "/cosmos-hub-politics/static/media/picwish.c062f284171be92a40a4.png",
     "static/media/TitilliumWeb-Regular.ttf": "/cosmos-hub-politics/static/media/TitilliumWeb-Regular.e53e0538893d432e0635.ttf",
     "static/media/logo.svg": "/cosmos-hub-politics/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/cosmos-hub-politics/index.html",
-    "main.7e491257.css.map": "/cosmos-hub-politics/static/css/main.7e491257.css.map",
-    "main.050aaf09.js.map": "/cosmos-hub-politics/static/js/main.050aaf09.js.map",
+    "main.fcbb54bf.css.map": "/cosmos-hub-politics/static/css/main.fcbb54bf.css.map",
+    "main.38848e0f.js.map": "/cosmos-hub-politics/static/js/main.38848e0f.js.map",
     "787.a17014d2.chunk.js.map": "/cosmos-hub-politics/static/js/787.a17014d2.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.7e491257.css",
-    "static/js/main.050aaf09.js"
+    "static/css/main.fcbb54bf.css",
+    "static/js/main.38848e0f.js"
   ]
 }
