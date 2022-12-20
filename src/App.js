@@ -19,7 +19,6 @@ function App() {
   const [sentUpdate, setSentUpdate] = useState(false);
   const [rotateMessage, setRotateMessage] = useState('Please Rotate Your Device')
   const [device, setDevice] = useState("");
-  const [render, setRender] = useState(true);
 
   const getCurrentValidator = (current) => {
     setCurrentValidator(current);
@@ -83,7 +82,7 @@ function App() {
     window.screen.orientation.addEventListener("change", handleOrientationChange);
 
     return () => {
-      window.screen.removeEventListener("orientationchange", handleOrientationChange);
+      window.screen.orientation.removeEventListener("change", handleOrientationChange);
     };
 
   }, [])

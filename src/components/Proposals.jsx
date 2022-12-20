@@ -61,8 +61,7 @@ export default function Proposals(props) {
     }
 
     function fetchSelectedVote() {
-        //https://api.mintscan.io/v1/cosmos/account/${selectedValidator.account_address}/votes`
-        fetch(`htt[://localhost:4000/votes`)
+        fetch(`http://localhost:4000/votes?account=${selectedValidator.account_address}`)
             .then(res => {
                 return res.json()
             })
