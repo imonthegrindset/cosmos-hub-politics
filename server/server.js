@@ -13,6 +13,8 @@ app.use(
     })
 )
 
+app.use(express.static('build'));
+
 app.use(getValidators)
 app.use(getProposals)
 app.use(getAtoms)
