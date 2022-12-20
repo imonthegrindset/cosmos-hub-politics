@@ -34,7 +34,7 @@ export default function ValidatorProfile(props) {
             setFirstRender(false);
             return;
         }
-        fetch('https://api.mintscan.io/v1/utils/params/chain/cosmos')
+        fetch('http://localhost:4000/atoms')
             .then(res => {
                 return res.json()
             })
@@ -46,7 +46,7 @@ export default function ValidatorProfile(props) {
                 setVotingPower(votingPower.toFixed(2).toString() + '%');
             })
 
-        fetch(`https://api.mintscan.io/v1/cosmos/account/${props.currentValidator.account_address}/votes`)
+        fetch(`http://localhost:4000/votes?account=${props.currentValidator.account_address}`)
             .then(res => {
                 return res.json()
             }).then(data => {

@@ -5,6 +5,7 @@ const app = express();
 let validators;
 let proposals;
 let atoms;
+let votes;
 
 
 app.use(
@@ -42,6 +43,11 @@ async function getAtoms (req, res, next) {
     next();
 }
 
+async function getValidatorVotes (account) {
+
+    let response = await fetch(`https://api.mintscan.io/v1/cosmos/account/${account}/votes`);
+    votes = response.json();
+}
 
 
 app.get('/', (req, res) => {
@@ -57,8 +63,12 @@ app.get('/proposals', async (req, res) => {
 })
 
 app.get('/atoms', async (req, res) => {
-    console.log(await atoms)
     res.json(await atoms);
+})
+
+app.get('/votes', async (req, res) => {
+    await getValidatorVotes(req.query.account)
+    res.json(await votes);
 })
 
 
