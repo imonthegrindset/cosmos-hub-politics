@@ -70,20 +70,20 @@ function App() {
         setValidators(filtered);
       })
 
-    function handleOrientationChange() {
-      // console.log(window.screen.orientation.type);
-      if (window.screen.orientation.type === 'portrait-primary' && window.innerWidth < 768) {
-        setDevice("portrait")
-      } else {
-        setDevice("");
-      }
-    }
+    // function handleOrientationChange() {
+    //   // console.log(window.screen.orientation.type);
+    //   if (window.screen.orientation.type === 'portrait-primary' && window.innerWidth < 768) {
+    //     setDevice("portrait")
+    //   } else {
+    //     setDevice("");
+    //   }
+    // }
 
-    window.screen.orientation.addEventListener("change", handleOrientationChange);
+    // window.screen.orientation.addEventListener("change", handleOrientationChange);
 
-    return () => {
-      window.screen.orientation.removeEventListener("change", handleOrientationChange);
-    };
+    // return () => {
+    //   window.screen.orientation.removeEventListener("change", handleOrientationChange);
+    // };
 
   }, [])
 
@@ -113,35 +113,52 @@ function App() {
   }
 
   return (
-
     <Router>
-      {device === "" ? (
-        <div className='bg-gradient-to-br from-violet-200 to-white min-h-screen overflow-hidden'>
-          <NavBar />
-          <Routes>
-            <Route path='/' element={<Home />}></Route>
-            <Route path='/validators' element={<ValidatorProfile
-              sendUpdate={sendUpdate} sentUpdate={sentUpdate}
-              validators={validators} proposals={proposals} currentValidator={currentValidator} getCurrentValidator={getCurrentValidator} getCurrentProposal={getCurrentProposal}
-              currentProposal={currentProposal} />}></Route>
-            <Route path='/proposals' element={<Proposals
-              sendUpdate={sendUpdate}
-              stakedAtoms={stakedAtoms} validators={validators} proposals={proposals} currentValidator={currentValidator}
-              currentProposal={currentProposal} getCurrentProposal={getCurrentProposal} getCurrentValidator={getCurrentValidator} turnoutProposals={turnoutProposals} />}></Route>
-          </Routes>
-        </div>
-      ) : (
-        <><nav className="bg-indigo-800 flex flex-row gap-12 py-5 px-10 items-center justify-center">
-          <div className='text-2xl font-Titillium text-white self-center mb-1 font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-blue-300'>GovernHUB
-          </div>
-        </nav>
-          <div className='bg-gradient-to-br from-violet-200 to-white min-h-screen overflow-hidden flex flex-col gap-5 items-center justify-center'>
-            <div className='font-bold text-3xl flex justify-center text-center text-indigo-700'>{rotateMessage}</div>
-            <div><BiRotateRight className='font-bold text-8xl text-indigo-700' /></div>
-          </div></>
 
-      )}
-    </Router >
+      <div className='bg-gradient-to-br from-violet-200 to-white min-h-screen overflow-hidden'>
+        <NavBar />
+        <Routes>
+          <Route path='/cosmos-hub-politics/' element={<Home />}></Route>
+          <Route path='/validators' element={<ValidatorProfile
+            sendUpdate={sendUpdate} sentUpdate={sentUpdate}
+            validators={validators} proposals={proposals} currentValidator={currentValidator} getCurrentValidator={getCurrentValidator} getCurrentProposal={getCurrentProposal}
+            currentProposal={currentProposal} />}></Route>
+          <Route path='/proposals' element={<Proposals
+            sendUpdate={sendUpdate}
+            stakedAtoms={stakedAtoms} validators={validators} proposals={proposals} currentValidator={currentValidator}
+            currentProposal={currentProposal} getCurrentProposal={getCurrentProposal} getCurrentValidator={getCurrentValidator} turnoutProposals={turnoutProposals} />}></Route>
+        </Routes>
+      </div>
+  </Router >
+
+    // <Router>
+    //   {device === "" ? (
+    //     <div className='bg-gradient-to-br from-violet-200 to-white min-h-screen overflow-hidden'>
+    //       <NavBar />
+    //       <Routes>
+    //         <Route path='/cosmos-hub-politics/' element={<Home />}></Route>
+    //         <Route path='/validators' element={<ValidatorProfile
+    //           sendUpdate={sendUpdate} sentUpdate={sentUpdate}
+    //           validators={validators} proposals={proposals} currentValidator={currentValidator} getCurrentValidator={getCurrentValidator} getCurrentProposal={getCurrentProposal}
+    //           currentProposal={currentProposal} />}></Route>
+    //         <Route path='/proposals' element={<Proposals
+    //           sendUpdate={sendUpdate}
+    //           stakedAtoms={stakedAtoms} validators={validators} proposals={proposals} currentValidator={currentValidator}
+    //           currentProposal={currentProposal} getCurrentProposal={getCurrentProposal} getCurrentValidator={getCurrentValidator} turnoutProposals={turnoutProposals} />}></Route>
+    //       </Routes>
+    //     </div>
+    //   ) : (
+    //     <><nav className="bg-indigo-800 flex flex-row gap-12 py-5 px-10 items-center justify-center">
+    //       <div className='text-2xl font-Titillium text-white self-center mb-1 font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-blue-300'>GovernHUB
+    //       </div>
+    //     </nav>
+    //       <div className='bg-gradient-to-br from-violet-200 to-white min-h-screen overflow-hidden flex flex-col gap-5 items-center justify-center'>
+    //         <div className='font-bold text-3xl flex justify-center text-center text-indigo-700'>{rotateMessage}</div>
+    //         <div><BiRotateRight className='font-bold text-8xl text-indigo-700' /></div>
+    //       </div></>
+
+    //   )}
+    // </Router >
   );
 }
 
