@@ -100,7 +100,7 @@ function App() {
       <div className='bg-gradient-to-br from-violet-200 to-white min-h-screen overflow-hidden portrait:hidden'>
         <NavBar />
         <Routes>
-          <Route path='/cosmos-hub-politics/' element={<Home />}></Route>
+          <Route path='/' element={<Home />}></Route>
           <Route path='/validators' element={<ValidatorProfile
             sendUpdate={sendUpdate} sentUpdate={sentUpdate}
             validators={validators} proposals={proposals} currentValidator={currentValidator} getCurrentValidator={getCurrentValidator} getCurrentProposal={getCurrentProposal}
