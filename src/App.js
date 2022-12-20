@@ -83,7 +83,7 @@ function App() {
     window.screen.orientation.addEventListener("change", handleOrientationChange);
 
     return () => {
-      window.screen.orientation.removeEventListener("change", handleOrientationChange);
+      window.screen.removeEventListener("orientationchange", handleOrientationChange);
     };
 
   }, [])
