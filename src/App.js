@@ -17,7 +17,7 @@ function App() {
   const [currentProposal, setCurrentProposal] = useState([])
   const [stakedAtoms, setStakedAtoms] = useState(0);
   const [sentUpdate, setSentUpdate] = useState(false);
-  
+
   const getCurrentValidator = (current) => {
     setCurrentValidator(current);
   }
@@ -117,7 +117,7 @@ function App() {
           </div>
         </nav>
           <div className='bg-gradient-to-br from-violet-200 to-white min-h-screen overflow-hidden flex flex-col gap-5 items-center justify-center'>
-            <div className='font-bold text-3xl flex justify-center text-center text-indigo-700'>{rotateMessage}</div>
+            <div className='font-bold text-3xl flex justify-center text-center text-indigo-700'>Please Rotate Your Device</div>
             <div><BiRotateRight className='font-bold text-8xl text-indigo-700' /></div>
           </div>
         </div>
