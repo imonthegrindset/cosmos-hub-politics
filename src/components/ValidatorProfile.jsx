@@ -34,7 +34,7 @@ export default function ValidatorProfile(props) {
             setFirstRender(false);
             return;
         }
-        fetch('http://localhost:4000/atoms')
+        fetch('https://cute-erin-grasshopper-veil.cyclic.app/atoms')
             .then(res => {
                 return res.json()
             })
@@ -46,7 +46,7 @@ export default function ValidatorProfile(props) {
                 setVotingPower(votingPower.toFixed(2).toString() + '%');
             })
 
-        fetch(`http://localhost:4000/votes?account=${props.currentValidator.account_address}`)
+        fetch(`https://cute-erin-grasshopper-veil.cyclic.app/votes?account=${props.currentValidator.account_address}`)
             .then(res => {
                 return res.json()
             }).then(data => {

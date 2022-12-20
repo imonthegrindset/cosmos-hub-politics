@@ -33,7 +33,7 @@ function App() {
 
 
   useEffect(() => {
-    fetch('http://localhost:4000/atoms')
+    fetch('https://cute-erin-grasshopper-veil.cyclic.app/atoms')
       .then(res => {
         return res.json()
       })
@@ -44,7 +44,7 @@ function App() {
         setStakedAtoms(bondedAtoms);
       })
 
-    fetch('http://localhost:4000/proposals', {
+    fetch('https://cute-erin-grasshopper-veil.cyclic.app/proposals', {
       method: 'get'
     })
       .then(res => {
@@ -54,7 +54,7 @@ function App() {
         setProposals(data);
       })
 
-    fetch('http://localhost:4000/validators', {
+    fetch('https://cute-erin-grasshopper-veil.cyclic.app/validators', {
       method: 'get'
     })
       .then(res => {

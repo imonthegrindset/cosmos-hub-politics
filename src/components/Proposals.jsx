@@ -61,7 +61,7 @@ export default function Proposals(props) {
     }
 
     function fetchSelectedVote() {
-        fetch(`http://localhost:4000/votes?account=${selectedValidator.account_address}`)
+        fetch(`https://cute-erin-grasshopper-veil.cyclic.app/votes?account=${selectedValidator.account_address}`)
             .then(res => {
                 return res.json()
             })
