@@ -36,7 +36,7 @@ function App() {
 
 
   useEffect(() => {
-    fetch('https://api.mintscan.io/v1/utils/params/chain/cosmos')
+    fetch('http://localhost:4000/atoms')
     .then(res => {
         return res.json()
     })
@@ -47,7 +47,7 @@ function App() {
         setStakedAtoms(bondedAtoms);
     })
 
-    fetch('https://api.mintscan.io/v1/cosmos/proposals', {
+    fetch('http://localhost:4000/proposals', {
       method: 'get'
     })
       .then(res => {
@@ -57,7 +57,7 @@ function App() {
         setProposals(data);
       })
 
-    fetch('https://api.mintscan.io/v1/cosmos/validators', {
+    fetch('http://localhost:4000/validators', {
       method: 'get'
     })
       .then(res => {
